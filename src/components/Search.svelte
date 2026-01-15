@@ -12,8 +12,9 @@
   async function loadPagefind() {
     if (pagefind) return;
     try {
-      // @ts-ignore - Pagefind is loaded from the built assets
-      pagefind = await import('/pagefind/pagefind.js');
+      // Pagefind is generated after build, so we need to prevent Vite from resolving it
+      const pagefindPath = '/pagefind/pagefind.js';
+      pagefind = await import(/* @vite-ignore */ pagefindPath);
       await pagefind.init();
     } catch (e) {
       console.warn('Pagefind not available (run build first):', e);
