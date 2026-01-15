@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Colophon"
+  description="How this site was built — the tools, technologies, and principles behind evan.garden."
+>
+  <section class="section">
+    <div class="container-narrow">
+      <header class="mb-12" data-animate="fade-up">
+        <p class="text-accent-amber text-small uppercase tracking-widest mb-4">
+          How It's Made
+        </p>
+        <h1 class="text-h1 font-serif text-text-primary mb-4">
+          Colophon
+        </h1>
+        <p class="text-body text-text-secondary">
+          A look under the hood at how this digital garden was cultivated.
+        </p>
+      </header>
+
+      <div class="prose max-w-none space-y-12">
+        <!-- Philosophy -->
+        <section data-animate="fade-up">
+          <h2 class="text-h2 font-serif text-text-primary mb-4">Philosophy</h2>
+          <p class="text-text-secondary mb-4">
+            This site is built as a <strong class="text-text-primary">digital garden</strong> — not a blog with reverse-chronological posts, but a living collection of interconnected notes that grow and evolve over time. Ideas start as seeds, develop through cultivation, and eventually mature into evergreen content.
+          </p>
+          <p class="text-text-secondary">
+            The garden metaphor extends to the design: organic shapes, natural movement, and a color palette inspired by earth and growth. Everything should feel alive without being distracting.
+          </p>
+        </section>
+
+        <!-- Technology -->
+        <section data-animate="fade-up">
+          <h2 class="text-h2 font-serif text-text-primary mb-4">Technology</h2>
+          <div class="space-y-4">
+            <div class="p-4 bg-garden-surface/50 rounded-lg">
+              <h3 class="text-text-primary font-medium mb-2">Astro</h3>
+              <p class="text-text-tertiary text-small">
+                Static site generation with the Islands architecture — JavaScript only where it's needed. Content lives in Markdown with frontmatter, processed through content collections.
+              </p>
+            </div>
+            <div class="p-4 bg-garden-surface/50 rounded-lg">
+              <h3 class="text-text-primary font-medium mb-2">Svelte</h3>
+              <p class="text-text-tertiary text-small">
+                Interactive components like search and the generative background. Svelte 5's runes make reactive state feel natural.
+              </p>
+            </div>
+            <div class="p-4 bg-garden-surface/50 rounded-lg">
+              <h3 class="text-text-primary font-medium mb-2">Tailwind CSS</h3>
+              <p class="text-text-tertiary text-small">
+                Utility-first styling with a custom design system. Colors, typography, and spacing are all defined as design tokens for consistency.
+              </p>
+            </div>
+            <div class="p-4 bg-garden-surface/50 rounded-lg">
+              <h3 class="text-text-primary font-medium mb-2">GSAP</h3>
+              <p class="text-text-tertiary text-small">
+                Scroll-triggered animations that respect prefers-reduced-motion. Subtle fade-ups and staggers add polish without overwhelming.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Features -->
+        <section data-animate="fade-up">
+          <h2 class="text-h2 font-serif text-text-primary mb-4">Features</h2>
+          <ul class="space-y-3 text-text-secondary">
+            <li class="flex items-start gap-3">
+              <span class="text-accent-amber mt-1">*</span>
+              <span><strong class="text-text-primary">Wikilinks</strong> — Notes link to each other using [[double bracket]] syntax, creating a web of connections.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent-amber mt-1">*</span>
+              <span><strong class="text-text-primary">Backlinks</strong> — Each note shows other notes that reference it, with context snippets showing how.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent-amber mt-1">*</span>
+              <span><strong class="text-text-primary">Maturity indicators</strong> — Seeds, seedlings, and evergreens show how developed each idea is.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent-amber mt-1">*</span>
+              <span><strong class="text-text-primary">Topic clusters</strong> — Notes organized by domain: systems thinking, hospitality, horticulture, AI, and play.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent-amber mt-1">*</span>
+              <span><strong class="text-text-primary">Full-text search</strong> — Powered by Pagefind for fast, client-side search across all content.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent-amber mt-1">*</span>
+              <span><strong class="text-text-primary">RSS feed</strong> — Subscribe to new notes at <a href="/feed.xml" class="text-accent-amber hover:text-accent-terracotta">/feed.xml</a>.</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Design -->
+        <section data-animate="fade-up">
+          <h2 class="text-h2 font-serif text-text-primary mb-4">Design</h2>
+          <p class="text-text-secondary mb-4">
+            The visual language draws from natural systems: earthy colors, organic shapes, and subtle movement. The generative background uses Poisson disk sampling for organic node distribution and simplex noise for natural motion — the same algorithms found in nature.
+          </p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+            <div class="text-center">
+              <div class="w-12 h-12 rounded-full bg-accent-amber mx-auto mb-2"></div>
+              <p class="text-text-tertiary text-small">Amber</p>
+            </div>
+            <div class="text-center">
+              <div class="w-12 h-12 rounded-full bg-accent-sage mx-auto mb-2"></div>
+              <p class="text-text-tertiary text-small">Sage</p>
+            </div>
+            <div class="text-center">
+              <div class="w-12 h-12 rounded-full bg-accent-terracotta mx-auto mb-2"></div>
+              <p class="text-text-tertiary text-small">Terracotta</p>
+            </div>
+            <div class="text-center">
+              <div class="w-12 h-12 rounded-full bg-accent-slate mx-auto mb-2"></div>
+              <p class="text-text-tertiary text-small">Slate</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Hosting -->
+        <section data-animate="fade-up">
+          <h2 class="text-h2 font-serif text-text-primary mb-4">Hosting & Deployment</h2>
+          <p class="text-text-secondary mb-4">
+            The site is hosted on <strong class="text-text-primary">Cloudflare Pages</strong> with automatic deployments from GitHub. Every push to main triggers a new build, making it easy to iterate and publish.
+          </p>
+          <p class="text-text-secondary">
+            Source code is available on <a href="https://github.com/evanramirez88/evan-garden" class="text-accent-amber hover:text-accent-terracotta">GitHub</a>.
+          </p>
+        </section>
+
+        <!-- Typography -->
+        <section data-animate="fade-up">
+          <h2 class="text-h2 font-serif text-text-primary mb-4">Typography</h2>
+          <p class="text-text-secondary">
+            Headlines use <strong class="text-text-primary font-serif">Fraunces</strong>, a soft serif with optical sizing that feels warm and approachable. Body text uses the system font stack for optimal readability and fast loading.
+          </p>
+        </section>
+      </div>
+
+      <nav class="mt-16 pt-8 border-t border-garden-border/30">
+        <a href="/" class="btn-ghost text-small">
+          ← Back Home
+        </a>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>

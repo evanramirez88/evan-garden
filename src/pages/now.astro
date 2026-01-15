@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Last updated date for the Now page
+const lastUpdated = new Date('2024-01-15');
+---
+
+<BaseLayout
+  title="Now"
+  description="What I'm currently focused on and working towards."
+>
+  <section class="section">
+    <div class="container-narrow">
+      <header class="mb-12" data-animate="fade-up">
+        <p class="text-accent-amber text-small uppercase tracking-widest mb-4">
+          Current Focus
+        </p>
+        <h1 class="text-h1 font-serif text-text-primary mb-4">
+          What I'm Doing Now
+        </h1>
+        <p class="text-text-tertiary text-small">
+          Last updated: {lastUpdated.toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+          })}
+        </p>
+      </header>
+
+      <div class="prose max-w-none space-y-12">
+        <!-- Current Projects -->
+        <section data-animate="fade-up">
+          <h2 class="text-h2 font-serif text-text-primary mb-4">Building</h2>
+          <ul class="space-y-3 text-text-secondary">
+            <li class="flex items-start gap-3">
+              <span class="text-accent-amber mt-1">*</span>
+              <span>This digital garden — continuously refining and adding notes</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent-amber mt-1">*</span>
+              <span>CAMELOT framework for AI agent orchestration</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent-amber mt-1">*</span>
+              <span>Consulting projects in restaurant technology and systems optimization</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Learning -->
+        <section data-animate="fade-up">
+          <h2 class="text-h2 font-serif text-text-primary mb-4">Learning</h2>
+          <ul class="space-y-3 text-text-secondary">
+            <li class="flex items-start gap-3">
+              <span class="text-accent-sage mt-1">*</span>
+              <span>Deeper systems dynamics modeling</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent-sage mt-1">*</span>
+              <span>Advanced cannabis cultivation techniques</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent-sage mt-1">*</span>
+              <span>Multi-agent AI architectures</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Reading -->
+        <section data-animate="fade-up">
+          <h2 class="text-h2 font-serif text-text-primary mb-4">Reading</h2>
+          <ul class="space-y-3 text-text-secondary">
+            <li class="flex items-start gap-3">
+              <span class="text-accent-terracotta mt-1">*</span>
+              <span><em>Thinking in Systems</em> by Donella Meadows (re-reading)</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-accent-terracotta mt-1">*</span>
+              <span><em>The Art of Action</em> by Stephen Bungay</span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Location / Life -->
+        <section data-animate="fade-up">
+          <h2 class="text-h2 font-serif text-text-primary mb-4">Life</h2>
+          <p class="text-text-secondary mb-4">
+            Based on Cape Cod, Massachusetts. Working remotely, consulting, and continuously cultivating ideas across my various domains of interest.
+          </p>
+        </section>
+      </div>
+
+      <!-- What is a Now page? -->
+      <div class="mt-16 pt-8 border-t border-garden-border/30" data-animate="fade-up">
+        <p class="text-text-tertiary text-small">
+          This is a <a href="https://nownownow.com/about" class="text-accent-amber hover:text-accent-terracotta">Now page</a>. It's a snapshot of what I'm focused on at this point in my life.
+        </p>
+      </div>
+
+      <nav class="mt-12">
+        <a href="/" class="btn-ghost text-small">
+          ← Back Home
+        </a>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>

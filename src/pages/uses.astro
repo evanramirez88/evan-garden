@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const tools = {
+  development: [
+    { name: 'VS Code', description: 'Primary editor with Vim keybindings' },
+    { name: 'Cursor', description: 'AI-augmented coding for complex tasks' },
+    { name: 'Claude', description: 'AI assistant for research and coding' },
+    { name: 'GitHub', description: 'Version control and collaboration' },
+    { name: 'Warp', description: 'Modern terminal with AI features' },
+  ],
+  stack: [
+    { name: 'Astro', description: 'Static site generation with islands' },
+    { name: 'Svelte', description: 'Interactive components' },
+    { name: 'Tailwind CSS', description: 'Utility-first styling' },
+    { name: 'TypeScript', description: 'Type safety throughout' },
+    { name: 'Cloudflare Pages', description: 'Fast, global deployment' },
+  ],
+  productivity: [
+    { name: 'Obsidian', description: 'Local-first knowledge management' },
+    { name: 'Linear', description: 'Project tracking' },
+    { name: 'Notion', description: 'Documentation and wikis' },
+    { name: 'Raycast', description: 'Mac launcher and automation' },
+  ],
+  hospitality: [
+    { name: 'Toast POS', description: 'Restaurant management platform' },
+    { name: '7shifts', description: 'Staff scheduling' },
+    { name: 'Restaurant365', description: 'Back-office operations' },
+  ],
+  hardware: [
+    { name: 'MacBook Pro M3', description: 'Primary development machine' },
+    { name: 'Framework Laptop', description: 'Repairable, upgradeable secondary' },
+    { name: 'Keychron Q1', description: 'Mechanical keyboard' },
+    { name: 'Sony WH-1000XM5', description: 'Noise-cancelling headphones' },
+  ],
+};
+---
+
+<BaseLayout
+  title="Uses"
+  description="The tools, software, and hardware I use for work and life."
+>
+  <section class="section">
+    <div class="container-narrow">
+      <header class="mb-12" data-animate="fade-up">
+        <p class="text-accent-amber text-small uppercase tracking-widest mb-4">
+          Tools & Setup
+        </p>
+        <h1 class="text-h1 font-serif text-text-primary mb-4">
+          What I Use
+        </h1>
+        <p class="text-body text-text-secondary">
+          A living document of the tools, software, and hardware that power my work across systems consulting, development, and hospitality.
+        </p>
+      </header>
+
+      <div class="space-y-12">
+        <!-- Development -->
+        <section data-animate="fade-up">
+          <h2 class="text-h2 font-serif text-text-primary mb-6">Development</h2>
+          <div class="grid gap-4">
+            {tools.development.map(tool => (
+              <div class="card-hover p-4">
+                <h3 class="text-text-primary font-medium mb-1">{tool.name}</h3>
+                <p class="text-text-tertiary text-small">{tool.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <!-- Tech Stack -->
+        <section data-animate="fade-up">
+          <h2 class="text-h2 font-serif text-text-primary mb-6">This Site's Stack</h2>
+          <div class="grid gap-4">
+            {tools.stack.map(tool => (
+              <div class="card-hover p-4">
+                <h3 class="text-text-primary font-medium mb-1">{tool.name}</h3>
+                <p class="text-text-tertiary text-small">{tool.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <!-- Productivity -->
+        <section data-animate="fade-up">
+          <h2 class="text-h2 font-serif text-text-primary mb-6">Productivity</h2>
+          <div class="grid gap-4">
+            {tools.productivity.map(tool => (
+              <div class="card-hover p-4">
+                <h3 class="text-text-primary font-medium mb-1">{tool.name}</h3>
+                <p class="text-text-tertiary text-small">{tool.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <!-- Hospitality -->
+        <section data-animate="fade-up">
+          <h2 class="text-h2 font-serif text-text-primary mb-6">Hospitality Tech</h2>
+          <div class="grid gap-4">
+            {tools.hospitality.map(tool => (
+              <div class="card-hover p-4">
+                <h3 class="text-text-primary font-medium mb-1">{tool.name}</h3>
+                <p class="text-text-tertiary text-small">{tool.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <!-- Hardware -->
+        <section data-animate="fade-up">
+          <h2 class="text-h2 font-serif text-text-primary mb-6">Hardware</h2>
+          <div class="grid gap-4">
+            {tools.hardware.map(tool => (
+              <div class="card-hover p-4">
+                <h3 class="text-text-primary font-medium mb-1">{tool.name}</h3>
+                <p class="text-text-tertiary text-small">{tool.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <nav class="mt-16 pt-8 border-t border-garden-border/30">
+        <a href="/" class="btn-ghost text-small">
+          ← Back Home
+        </a>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>
