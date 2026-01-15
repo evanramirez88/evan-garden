@@ -24,7 +24,7 @@
     links: Link[];
   }
 
-  export let data: GraphData;
+  let { data }: { data: GraphData } = $props();
 
   let container: HTMLDivElement;
   let width = 800;
