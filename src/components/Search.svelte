@@ -3,7 +3,7 @@
 
   let isOpen = $state(false);
   let query = $state('');
-  let results = $state<any[]>([]);
+  let results: any[] = $state([]);
   let selectedIndex = $state(0);
   let pagefind: any = null;
   let searchInput: HTMLInputElement;

@@ -10,7 +10,7 @@
 
   let { notes = [] }: { notes: NotePreview[] } = $props();
 
-  let preview = $state<NotePreview | null>(null);
+  let preview: NotePreview | null = $state(null);
   let visible = $state(false);
   let position = $state({ x: 0, y: 0, above: false, bottomOffset: 0 });
   let hoverTimeout: ReturnType<typeof setTimeout> | null = null;
