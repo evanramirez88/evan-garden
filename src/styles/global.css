@@ -153,3 +153,54 @@
     @apply bg-gradient-to-r from-accent-amber to-accent-terracotta bg-clip-text text-transparent;
   }
 }
+
+/* Enhanced View Transitions */
+@supports (view-transition-name: none) {
+  /* Header persists across transitions */
+  .site-header {
+    view-transition-name: site-header;
+  }
+
+  /* Main content area transitions */
+  .main-content {
+    view-transition-name: main-content;
+  }
+
+  /* Page title transitions for note cards */
+  [data-note-transition] {
+    view-transition-name: var(--note-transition-name);
+  }
+
+  /* Asymmetric timing for snappier feel */
+  ::view-transition-old(main-content) {
+    animation: fade-scale-out 0.2s ease-in forwards;
+  }
+
+  ::view-transition-new(main-content) {
+    animation: fade-scale-in 0.3s ease-out forwards;
+  }
+
+  /* Header stays static during transitions */
+  ::view-transition-old(site-header),
+  ::view-transition-new(site-header) {
+    animation: none;
+  }
+
+  @keyframes fade-scale-out {
+    to {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+  }
+
+  @keyframes fade-scale-in {
+    from {
+      opacity: 0;
+      transform: scale(1.02);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}

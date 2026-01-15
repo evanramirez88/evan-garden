@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MaturityBadge from '../../components/MaturityBadge.astro';
 import Backlinks from '../../components/Backlinks.astro';
+import WikilinkPreview from '../../components/WikilinkPreview.svelte';
 
 export async function getStaticPaths() {
   const gardenEntries = await getCollection('garden', ({ data }) => !data.draft);
@@ -85,6 +86,14 @@ const topicLabels = {
   play: 'Play & Analysis',
   meta: 'Meta',
 };
+
+// Prepare notes data for wikilink preview
+const notesPreview = allNotes.map(note => ({
+  slug: note.slug,
+  title: note.data.title,
+  description: note.data.description || '',
+  maturity: note.data.maturity,
+}));
 ---
 
 <BaseLayout
@@ -198,6 +207,9 @@ const topicLabels = {
       </nav>
     </div>
   </article>
+
+  <!-- Wikilink hover preview -->
+  <WikilinkPreview client:load notes={notesPreview} />
 </BaseLayout>
 
 <style is:global>
