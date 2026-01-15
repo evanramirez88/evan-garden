@@ -13,6 +13,8 @@
     "@astrojs/rss": "^4.0.0",
     "@astrojs/svelte": "^7.0.0",
     "@astrojs/tailwind": "^6.0.0",
+    "@threlte/core": "^8.0.0",
+    "@threlte/extras": "^9.0.0",
     "astro": "^5.0.0",
     "d3": "^7.9.0",
     "d3-force": "^3.0.0",
@@ -20,6 +22,7 @@
     "marked": "^12.0.0",
     "svelte": "^5.0.0",
     "tailwindcss": "^3.4.0",
+    "three": "^0.170.0",
     "unist-util-visit": "^5.0.0"
   },
   "devDependencies": {

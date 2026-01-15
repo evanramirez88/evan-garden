@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SystemsVisualization from '../components/SystemsVisualization.svelte';
+---
+
+<BaseLayout
+  title="Systems Thinking Visualization"
+  description="An interactive 3D visualization of systems thinking concepts - stocks, flows, and feedback loops."
+>
+  <section class="section">
+    <div class="container-wide">
+      <header class="max-w-3xl mb-12" data-animate="fade-up">
+        <p class="text-accent-amber font-sans text-small uppercase tracking-widest mb-4">
+          Interactive Visualization
+        </p>
+        <h1 class="text-h1 font-serif text-text-primary mb-6">
+          Systems Thinking in Motion
+        </h1>
+        <p class="text-body text-text-secondary">
+          This visualization demonstrates the core concepts of systems thinking: stocks (the spheres)
+          accumulate and deplete, while flows (the animated particles) transfer between them.
+          Reinforcing loops amplify change; balancing loops stabilize.
+        </p>
+      </header>
+
+      <!-- 3D Visualization -->
+      <div class="mb-12" data-animate="fade-up">
+        <SystemsVisualization client:visible />
+      </div>
+
+      <!-- Explanation -->
+      <div class="grid md:grid-cols-2 gap-8 mb-12" data-animate="stagger-parent">
+        <div class="card" data-animate="stagger-child">
+          <h3 class="text-h3 font-serif text-text-primary mb-3">
+            <span class="text-accent-amber">◎</span> Stocks
+          </h3>
+          <p class="text-text-secondary text-small">
+            Stocks are accumulations — things that can be measured at a point in time.
+            Resources, inventory, population, knowledge. In the visualization, each glowing
+            sphere represents a stock in the system.
+          </p>
+        </div>
+
+        <div class="card" data-animate="stagger-child">
+          <h3 class="text-h3 font-serif text-text-primary mb-3">
+            <span class="text-accent-amber">→</span> Flows
+          </h3>
+          <p class="text-text-secondary text-small">
+            Flows are rates of change — they fill or drain stocks over time. The animated
+            particles traveling between spheres represent flows: production rates, consumption
+            rates, information transfer.
+          </p>
+        </div>
+
+        <div class="card" data-animate="stagger-child">
+          <h3 class="text-h3 font-serif text-text-primary mb-3">
+            <span class="text-accent-amber">↺</span> Reinforcing Loops
+          </h3>
+          <p class="text-text-secondary text-small">
+            Reinforcing loops amplify change — growth spirals, vicious cycles. In amber:
+            more resources enable more production, which generates more resources.
+            These loops create exponential growth or collapse.
+          </p>
+        </div>
+
+        <div class="card" data-animate="stagger-child">
+          <h3 class="text-h3 font-serif text-text-primary mb-3">
+            <span class="text-accent-terracotta">⟳</span> Balancing Loops
+          </h3>
+          <p class="text-text-secondary text-small">
+            Balancing loops seek equilibrium — thermostats, market prices. In terracotta:
+            as demand rises, it eventually depletes resources, which limits production.
+            These loops stabilize systems.
+          </p>
+        </div>
+      </div>
+
+      <!-- Learn More -->
+      <div class="text-center" data-animate="fade-up">
+        <p class="text-text-secondary mb-6">
+          Want to learn more about systems thinking?
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/garden/systems-thinking-intro" class="btn-primary">
+            Read the Introduction →
+          </a>
+          <a href="/garden/leverage-points-systems" class="btn-ghost">
+            Explore Leverage Points
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
