@@ -12,8 +12,8 @@ const navigation = [
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="site-header fixed top-0 left-0 right-0 z-50 bg-garden-charcoal/80 backdrop-blur-md border-b border-garden-border/30">
-  <nav class="container-wide flex items-center justify-between h-16">
+<header class="site-header fixed top-0 left-0 right-0 z-50 bg-garden-charcoal/80 backdrop-blur-md border-b border-garden-border/30" role="banner">
+  <nav class="container-wide flex items-center justify-between h-16" aria-label="Main navigation">
     <!-- Logo / Brand -->
     <a href="/" class="flex items-center gap-2 group">
       <span class="font-serif text-xl text-text-primary group-hover:text-accent-amber transition-colors">
