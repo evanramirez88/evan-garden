@@ -22,13 +22,55 @@ const { Content } = await entry.render();
 // Get all notes for backlinks calculation
 const allNotes = await getCollection('garden', ({ data }) => !data.draft);
 
-// Find notes that link to this one
-const backlinks = allNotes.filter(note => {
-  // Check relatedNotes array
-  if (note.data.relatedNotes?.includes(entry.slug)) return true;
-  // Check body for wikilinks
-  return note.body.includes(`[[${entry.slug}`) || note.body.includes(`[[${entry.data.title}`);
-}).filter(note => note.slug !== entry.slug);
+// Helper to extract context around a wikilink
+function extractContext(body: string, targetSlug: string, targetTitle: string): string | null {
+  // Find the wikilink pattern
+  const patterns = [
+    new RegExp(`\\[\\[${targetSlug}[\\]|]`, 'i'),
+    new RegExp(`\\[\\[${targetTitle}[\\]|]`, 'i'),
+  ];
+
+  for (const pattern of patterns) {
+    const match = body.match(pattern);
+    if (match && match.index !== undefined) {
+      // Get surrounding text (150 chars before and after)
+      const start = Math.max(0, match.index - 80);
+      const end = Math.min(body.length, match.index + match[0].length + 80);
+      let context = body.slice(start, end);
+
+      // Clean up - remove markdown syntax, trim to sentence boundaries if possible
+      context = context
+        .replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, '$2$1') // Convert wikilinks to text
+        .replace(/[#*_`]/g, '') // Remove markdown formatting
+        .replace(/\n+/g, ' ') // Replace newlines with spaces
+        .trim();
+
+      // Add ellipsis if truncated
+      if (start > 0) context = '...' + context;
+      if (end < body.length) context = context + '...';
+
+      return context;
+    }
+  }
+  return null;
+}
+
+// Find notes that link to this one with context
+const backlinksWithContext = allNotes
+  .filter(note => {
+    if (note.slug === entry.slug) return false;
+    // Check relatedNotes array
+    if (note.data.relatedNotes?.includes(entry.slug)) return true;
+    // Check body for wikilinks
+    return note.body.includes(`[[${entry.slug}`) || note.body.includes(`[[${entry.data.title}`);
+  })
+  .map(note => ({
+    note,
+    context: extractContext(note.body, entry.slug, entry.data.title),
+  }));
+
+// For backwards compatibility
+const backlinks = backlinksWithContext.map(b => b.note);
 
 // Get related notes that exist
 const relatedNotes = entry.data.relatedNotes
@@ -47,7 +89,11 @@ const topicLabels = {
 
 <BaseLayout
   title={entry.data.title}
-  description={entry.data.description || `A note on ${entry.data.title}`}
+  description={entry.data.description || `A ${entry.data.maturity} note on ${entry.data.title}`}
+  type="article"
+  publishedTime={entry.data.created}
+  modifiedTime={entry.data.updated}
+  tags={entry.data.tags}
 >
   <article class="section">
     <div class="container-narrow">
@@ -138,28 +184,8 @@ const topicLabels = {
         </div>
       )}
 
-      <!-- Backlinks -->
-      {backlinks.length > 0 && (
-        <div class="mt-12 pt-8 border-t border-garden-border/30">
-          <h2 class="text-h3 font-serif text-text-primary mb-4">
-            Notes that link here
-            <span class="text-text-tertiary text-small font-sans ml-2">({backlinks.length})</span>
-          </h2>
-          <div class="grid gap-3">
-            {backlinks.map(note => (
-              <a
-                href={`/garden/${note.slug}`}
-                class="flex items-center gap-3 p-4 rounded-lg bg-garden-surface/50 hover:bg-garden-surface transition-colors group"
-              >
-                <MaturityBadge maturity={note.data.maturity} showLabel={false} />
-                <span class="text-text-primary group-hover:text-accent-amber transition-colors">
-                  {note.data.title}
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
+      <!-- Backlinks with Context -->
+      <Backlinks backlinks={backlinksWithContext} />
 
       <!-- Navigation -->
       <nav class="mt-16 pt-8 border-t border-garden-border/30 flex justify-between">

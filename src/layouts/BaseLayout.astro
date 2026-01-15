@@ -3,20 +3,27 @@ import { ViewTransitions } from 'astro:transitions';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SEO from '../components/SEO.astro';
 
 interface Props {
   title: string;
   description?: string;
   image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  tags?: string[];
 }
 
 const {
   title,
   description = "The Grounded Generalist — A digital garden of interconnected ideas spanning systems thinking, restaurant tech, horticulture, and AI.",
-  image = "/og-image.png"
+  image = "/og-default.png",
+  type = "website",
+  publishedTime,
+  modifiedTime,
+  tags = [],
 } = Astro.props;
-
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!DOCTYPE html>
@@ -26,25 +33,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- Primary Meta Tags -->
-    <title>{title} | evan.garden</title>
-    <meta name="title" content={`${title} | evan.garden`} />
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalURL} />
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={`${title} | evan.garden`} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, Astro.site)} />
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
-    <meta property="twitter:title" content={`${title} | evan.garden`} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(image, Astro.site)} />
+    <!-- SEO Component handles all meta tags -->
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+      type={type}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+      tags={tags}
+    />
 
     <!-- Preconnect to font sources -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
