@@ -12,7 +12,7 @@
 
   let preview = $state<NotePreview | null>(null);
   let visible = $state(false);
-  let position = $state({ x: 0, y: 0, above: false });
+  let position = $state({ x: 0, y: 0, above: false, bottomOffset: 0 });
   let hoverTimeout: ReturnType<typeof setTimeout> | null = null;
 
   const maturityEmoji = {
@@ -76,6 +76,7 @@
         x: rect.left + rect.width / 2,
         y: above ? rect.top : rect.bottom,
         above,
+        bottomOffset: above ? window.innerHeight - rect.top + 8 : 0,
       };
 
       visible = true;
@@ -115,11 +116,7 @@
 {#if visible && preview}
   <div
     class="preview-card"
-    style="
-      left: {position.x}px;
-      {position.above ? `bottom: ${window.innerHeight - position.y + 8}px` : `top: ${position.y + 8}px`};
-      transform: translateX(-50%);
-    "
+    style="left: {position.x}px; {position.above ? `bottom: ${position.bottomOffset}px` : `top: ${position.y + 8}px`}; transform: translateX(-50%);"
   >
     <div class="flex items-center gap-2 mb-2">
       <span class="text-sm">{maturityEmoji[preview.maturity]}</span>

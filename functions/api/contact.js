@@ -12,13 +12,7 @@
  * - CONTACT_KV: KV namespace binding for rate limiting (optional)
  */
 
-interface Env {
-  RESEND_API_KEY?: string;
-  CONTACT_EMAIL?: string;
-  CONTACT_KV?: KVNamespace;
-}
-
-export const onRequestPost: PagesFunction<Env> = async (context) => {
+export async function onRequestPost(context) {
   const { request, env } = context;
 
   try {
@@ -79,7 +73,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     // Send email (if Resend is configured)
     if (env.RESEND_API_KEY && env.CONTACT_EMAIL) {
-      const subjectLabels: Record<string, string> = {
+      const subjectLabels = {
         consulting: 'Consulting Inquiry',
         collaboration: 'Collaboration Idea',
         conversation: 'General Chat',
@@ -139,4 +133,4 @@ Sent from evan.garden contact form
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
-};
+}

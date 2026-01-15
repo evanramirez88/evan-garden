@@ -255,8 +255,8 @@
 <canvas
   bind:this={canvas}
   class="absolute inset-0 w-full h-full pointer-events-auto"
-  on:mousemove={handleMouseMove}
-  on:mouseleave={handleMouseLeave}
+  onmousemove={handleMouseMove}
+  onmouseleave={handleMouseLeave}
   aria-hidden="true"
 />
 
