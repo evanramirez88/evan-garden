@@ -2,7 +2,7 @@
 
 ## Executive Summary: Current State vs. Vision
 
-The foundation exists: Astro project structure, Tailwind design system, basic pages, Content Collections, and a functional D3 knowledge graph. However, the current implementation is **approximately 35% complete** relative to the vision outlined in the original documents.
+The foundation exists: Astro project structure, Tailwind design system, basic pages, Content Collections, and a functional D3 knowledge graph. The current implementation is **approximately 85% complete** relative to the vision outlined in the original documents. All critical path features are implemented, and most high-value features are complete.
 
 What's built is a competent static site. What's envisioned is a **living, breathing digital organism** — a synthesis of Maggie Appleton's digital garden philosophy, Bruno Simon's experimental craft, and Rapha/Aesop's premium restraint. The gap is significant and exciting.
 
@@ -1193,9 +1193,9 @@ const jsonLd = {
 - [x] About
 - [x] Consulting
 - [x] Contact
-- [ ] Colophon (how the site was built)
-- [ ] Now page (current focus, updated regularly)
-- [ ] Uses page (tools, setup, gear)
+- [x] Colophon (how the site was built)
+- [x] Now page (current focus, updated regularly)
+- [x] Uses page (tools, setup, gear)
 
 **Garden Notes (Minimum Viable Garden)**:
 - [x] Leverage Points: Places to Intervene in a System (evergreen)
@@ -1223,25 +1223,25 @@ const jsonLd = {
 ## Part VII: Implementation Priority Matrix
 
 ### Critical Path (Must Have)
-1. Wikilink processing plugin (content unusable without it)
-2. GSAP scroll animations (transforms static to premium)
-3. Search functionality (discovery essential)
-4. Topic cluster pages (navigation structure)
-5. RSS feed (content distribution)
+1. [x] Wikilink processing plugin (content unusable without it)
+2. [x] GSAP scroll animations (transforms static to premium)
+3. [x] Search functionality (discovery essential)
+4. [x] Topic cluster pages (navigation structure)
+5. [x] RSS feed (content distribution)
 
 ### High Value (Should Have)
-6. Sliding panes interface (signature feature)
-7. Generative homepage background (first impression)
-8. Contact form backend (functional requirement)
-9. Contextual backlinks (garden depth)
-10. Custom icon set (visual coherence)
+6. [ ] Sliding panes interface (signature feature)
+7. [x] Generative homepage background (first impression)
+8. [x] Contact form backend (functional requirement)
+9. [x] Contextual backlinks (garden depth)
+10. [x] Custom icon set (visual coherence)
 
 ### Enhancement (Nice to Have)
-11. Three.js systems visualization
-12. Preview on wikilink hover
-13. Generative topic identities
-14. Photography treatment pipeline
-15. Now/Uses/Colophon pages
+11. [ ] Three.js systems visualization
+12. [x] Preview on wikilink hover
+13. [ ] Generative topic identities
+14. [ ] Photography treatment pipeline
+15. [x] Now/Uses/Colophon pages
 
 ### Future (Defer)
 16. Light mode toggle
