@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import MaturityBadge from '../../components/MaturityBadge.astro';
 import Backlinks from '../../components/Backlinks.astro';
 import WikilinkPreview from '../../components/WikilinkPreview.svelte';
+import PaneManager from '../../components/PaneManager.svelte';
 
 export async function getStaticPaths() {
   const gardenEntries = await getCollection('garden', ({ data }) => !data.draft);
@@ -104,6 +105,7 @@ const notesPreview = allNotes.map(note => ({
   modifiedTime={entry.data.updated}
   tags={entry.data.tags}
 >
+  <PaneManager client:load currentSlug={entry.slug} currentTitle={entry.data.title}>
   <article class="section">
     <div class="container-narrow">
       <!-- Header -->
@@ -207,6 +209,7 @@ const notesPreview = allNotes.map(note => ({
       </nav>
     </div>
   </article>
+  </PaneManager>
 
   <!-- Wikilink hover preview -->
   <WikilinkPreview client:load notes={notesPreview} />
