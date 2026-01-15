@@ -273,6 +273,29 @@ const notesPreview = allNotes.map(note => ({
     @apply border-garden-border/30 my-12;
   }
 
+  /* Image treatment in prose */
+  .prose img {
+    filter: saturate(0.8) sepia(0.1) contrast(1.05) brightness(0.95);
+    @apply rounded-lg border border-garden-border/30 my-8 w-full transition-all duration-300;
+  }
+
+  .prose img:hover {
+    @apply shadow-lg shadow-garden-black/50;
+    transform: scale(1.01);
+  }
+
+  .prose figure {
+    @apply my-8;
+  }
+
+  .prose figure img {
+    @apply my-0;
+  }
+
+  .prose figcaption {
+    @apply text-small text-text-tertiary mt-3 text-center italic;
+  }
+
   /* Wiki link styling */
   .prose a[href^="/garden"] {
     @apply text-accent-amber border-b border-accent-amber/30 hover:border-accent-amber transition-colors no-underline;
