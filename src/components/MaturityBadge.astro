@@ -1,0 +1,42 @@
+---
+interface Props {
+  maturity: 'seedling' | 'budding' | 'evergreen';
+  showLabel?: boolean;
+}
+
+const { maturity, showLabel = true } = Astro.props;
+
+const maturityConfig = {
+  seedling: {
+    icon: '🌱',
+    label: 'Seedling',
+    description: 'Early idea, just planted',
+    class: 'maturity-seedling bg-maturity-seedling/10 border-maturity-seedling/30',
+  },
+  budding: {
+    icon: '🌿',
+    label: 'Budding',
+    description: 'Growing and developing',
+    class: 'maturity-budding bg-maturity-budding/10 border-maturity-budding/30',
+  },
+  evergreen: {
+    icon: '🌳',
+    label: 'Evergreen',
+    description: 'Mature and well-developed',
+    class: 'maturity-evergreen bg-maturity-evergreen/10 border-maturity-evergreen/30',
+  },
+};
+
+const config = maturityConfig[maturity];
+---
+
+<span
+  class:list={[
+    'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border text-small',
+    config.class
+  ]}
+  title={config.description}
+>
+  <span>{config.icon}</span>
+  {showLabel && <span>{config.label}</span>}
+</span>

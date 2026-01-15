@@ -1,0 +1,96 @@
+---
+const navigation = [
+  { name: 'Home', href: '/' },
+  { name: 'Start Here', href: '/start' },
+  { name: 'Garden', href: '/garden' },
+  { name: 'Consulting', href: '/consulting' },
+  { name: 'About', href: '/about' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-garden-charcoal/80 backdrop-blur-md border-b border-garden-border/30">
+  <nav class="container-wide flex items-center justify-between h-16">
+    <!-- Logo / Brand -->
+    <a href="/" class="flex items-center gap-2 group">
+      <span class="font-serif text-xl text-text-primary group-hover:text-accent-amber transition-colors">
+        evan<span class="text-accent-amber">.</span>garden
+      </span>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <ul class="hidden md:flex items-center gap-8">
+      {navigation.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class:list={[
+              'text-small font-sans transition-colors duration-200 relative',
+              currentPath === item.href
+                ? 'text-accent-amber'
+                : 'text-text-secondary hover:text-text-primary'
+            ]}
+          >
+            {item.name}
+            {currentPath === item.href && (
+              <span class="absolute -bottom-1 left-0 right-0 h-px bg-accent-amber" />
+            )}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Mobile Menu Button -->
+    <button
+      id="mobile-menu-button"
+      class="md:hidden p-2 text-text-secondary hover:text-text-primary transition-colors"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path class="menu-open" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+        <path class="menu-close hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden hidden bg-garden-surface border-t border-garden-border/30">
+    <ul class="container-wide py-4 space-y-2">
+      {navigation.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class:list={[
+              'block py-2 text-body transition-colors duration-200',
+              currentPath === item.href
+                ? 'text-accent-amber'
+                : 'text-text-secondary hover:text-text-primary'
+            ]}
+          >
+            {item.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<!-- Spacer for fixed header -->
+<div class="h-16"></div>
+
+<script>
+  const menuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuOpen = menuButton?.querySelector('.menu-open');
+  const menuClose = menuButton?.querySelector('.menu-close');
+
+  menuButton?.addEventListener('click', () => {
+    const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+    menuButton.setAttribute('aria-expanded', String(!isExpanded));
+    mobileMenu?.classList.toggle('hidden');
+    menuOpen?.classList.toggle('hidden');
+    menuClose?.classList.toggle('hidden');
+  });
+</script>

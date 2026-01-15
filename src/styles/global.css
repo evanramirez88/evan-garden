@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom font imports */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  body {
+    @apply bg-garden-charcoal text-text-primary font-sans text-body antialiased;
+  }
+
+  /* Warm selection colors */
+  ::selection {
+    @apply bg-accent-amber/30 text-text-primary;
+  }
+
+  /* Smooth focus states */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent-amber;
+  }
+
+  /* Premium scrollbar styling */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-garden-black;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-garden-surface rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-garden-border;
+  }
+
+  /* Typography base */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif text-text-primary;
+  }
+
+  h1 { @apply text-h1; }
+  h2 { @apply text-h2; }
+  h3 { @apply text-h3; }
+
+  p {
+    @apply mb-4 last:mb-0;
+  }
+
+  a {
+    @apply text-accent-amber hover:text-accent-terracotta transition-colors duration-200;
+  }
+
+  /* Code styling */
+  code {
+    @apply font-mono text-accent-amber bg-garden-surface px-1.5 py-0.5 rounded text-small;
+  }
+
+  pre {
+    @apply bg-garden-black p-4 rounded-lg overflow-x-auto;
+  }
+
+  pre code {
+    @apply bg-transparent p-0;
+  }
+}
+
+@layer components {
+  /* Card component */
+  .card {
+    @apply bg-garden-surface rounded-xl p-6 border border-garden-border/50;
+  }
+
+  .card-hover {
+    @apply card transition-all duration-300 hover:border-accent-amber/30 hover:shadow-lg hover:shadow-accent-amber/5;
+  }
+
+  /* Button variants */
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-sans font-medium transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent-amber text-garden-black hover:bg-accent-terracotta;
+  }
+
+  .btn-ghost {
+    @apply btn border border-garden-border text-text-primary hover:border-accent-amber hover:text-accent-amber;
+  }
+
+  /* Maturity indicators */
+  .maturity-seedling {
+    @apply text-maturity-seedling;
+  }
+
+  .maturity-budding {
+    @apply text-maturity-budding;
+  }
+
+  .maturity-evergreen {
+    @apply text-maturity-evergreen;
+  }
+
+  /* Wiki link styling */
+  .wiki-link,
+  .wikilink {
+    @apply text-accent-amber border-b border-accent-amber/30 hover:border-accent-amber transition-colors duration-200 no-underline;
+  }
+
+  .wikilink-broken {
+    @apply text-accent-terracotta border-b border-dashed border-accent-terracotta/50 cursor-help;
+  }
+
+  /* Section containers */
+  .section {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
+  .container-narrow {
+    @apply max-w-3xl mx-auto px-6;
+  }
+
+  .container-wide {
+    @apply max-w-6xl mx-auto px-6;
+  }
+}
+
+@layer utilities {
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Text balance for headlines */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-accent-amber to-accent-terracotta bg-clip-text text-transparent;
+  }
+}

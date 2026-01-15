@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const pathways = [
+  {
+    title: "I'm looking for consulting help",
+    description: "You need expertise in restaurant technology, hospitality operations, or AI systems implementation.",
+    href: "/consulting",
+    icon: "◇",
+    cta: "View Consulting Services"
+  },
+  {
+    title: "I want to learn about systems thinking",
+    description: "You're interested in understanding how complex systems work and where to apply leverage.",
+    href: "/garden/leverage-points-systems",
+    icon: "◎",
+    cta: "Start with Leverage Points"
+  },
+  {
+    title: "I'm curious about AI orchestration",
+    description: "You want to understand frameworks for building coherent multi-agent AI systems.",
+    href: "/garden/camelot",
+    icon: "⬡",
+    cta: "Explore CAMELOT"
+  },
+  {
+    title: "I just want to explore",
+    description: "You're here to wander through ideas and discover unexpected connections.",
+    href: "/garden",
+    icon: "❋",
+    cta: "Enter the Garden"
+  },
+];
+---
+
+<BaseLayout
+  title="Start Here"
+  description="New to evan.garden? Choose your path based on what brought you here."
+>
+  <section class="section">
+    <div class="container-wide">
+      <div class="max-w-3xl mb-16">
+        <p class="text-accent-amber font-sans text-small uppercase tracking-widest mb-4">
+          Start Here
+        </p>
+        <h1 class="text-h1 font-serif text-text-primary mb-6">
+          Welcome, Traveler
+        </h1>
+        <p class="text-body text-text-secondary">
+          This is a polymath's digital garden—ideas spanning restaurant technology, horticulture,
+          AI systems, and beyond, all unified through systems thinking. Where you start depends
+          on what brought you here.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {pathways.map((path) => (
+          <a href={path.href} class="card-hover group p-8">
+            <span class="text-3xl text-accent-amber mb-4 block group-hover:scale-110 transition-transform origin-left">
+              {path.icon}
+            </span>
+            <h2 class="text-h3 font-serif text-text-primary mb-3 group-hover:text-accent-amber transition-colors">
+              {path.title}
+            </h2>
+            <p class="text-text-secondary mb-6">
+              {path.description}
+            </p>
+            <span class="text-accent-amber text-small font-sans">
+              {path.cta} →
+            </span>
+          </a>
+        ))}
+      </div>
+
+      <!-- About This Garden -->
+      <div class="mt-24 max-w-3xl">
+        <h2 class="text-h2 font-serif text-text-primary mb-6">
+          How This Garden Works
+        </h2>
+        <div class="space-y-6 text-text-secondary">
+          <p>
+            This isn't a blog with chronological posts. It's a <strong class="text-text-primary">digital garden</strong>—a
+            collection of interconnected notes at various stages of development.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-4 rounded-lg bg-garden-surface/50">
+              <span class="text-xl mb-2 block">🌱</span>
+              <strong class="text-text-primary block mb-1">Seedlings</strong>
+              <span class="text-small">Fresh ideas, just planted. Incomplete but worth sharing.</span>
+            </div>
+            <div class="p-4 rounded-lg bg-garden-surface/50">
+              <span class="text-xl mb-2 block">🌿</span>
+              <strong class="text-text-primary block mb-1">Budding</strong>
+              <span class="text-small">Growing ideas with substance but still developing.</span>
+            </div>
+            <div class="p-4 rounded-lg bg-garden-surface/50">
+              <span class="text-xl mb-2 block">🌳</span>
+              <strong class="text-text-primary block mb-1">Evergreen</strong>
+              <span class="text-small">Mature notes that have been well-tended over time.</span>
+            </div>
+          </div>
+
+          <p>
+            Notes link to each other through <span class="text-accent-amber">bidirectional connections</span>.
+            If Note A links to Note B, Note B knows about it. This creates a web of ideas rather than
+            a hierarchy of categories.
+          </p>
+
+          <p>
+            The <a href="/graph" class="text-accent-amber hover:text-accent-terracotta">knowledge graph</a> visualizes
+            these connections, revealing how restaurant operations concepts connect to systems thinking,
+            or how AI orchestration patterns echo horticultural principles.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

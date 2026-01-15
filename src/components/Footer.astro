@@ -1,0 +1,96 @@
+---
+const currentYear = new Date().getFullYear();
+
+const footerLinks = {
+  explore: [
+    { name: 'Garden', href: '/garden' },
+    { name: 'Projects', href: '/projects' },
+    { name: 'Graph', href: '/graph' },
+  ],
+  topics: [
+    { name: 'Systems Thinking', href: '/garden/systems' },
+    { name: 'Restaurant & Hospitality', href: '/garden/hospitality' },
+    { name: 'Growing Things', href: '/garden/horticulture' },
+    { name: 'AI & Technology', href: '/garden/ai' },
+  ],
+  connect: [
+    { name: 'About', href: '/about' },
+    { name: 'Consulting', href: '/consulting' },
+    { name: 'Contact', href: '/contact' },
+  ],
+};
+---
+
+<footer class="bg-garden-black border-t border-garden-border/30 mt-auto">
+  <div class="container-wide py-16">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
+      <!-- Brand Column -->
+      <div class="md:col-span-1">
+        <a href="/" class="font-serif text-xl text-text-primary hover:text-accent-amber transition-colors">
+          evan<span class="text-accent-amber">.</span>garden
+        </a>
+        <p class="mt-4 text-text-secondary text-small leading-relaxed">
+          The Grounded Generalist — cultivating ideas across systems thinking, hospitality, horticulture, and technology.
+        </p>
+      </div>
+
+      <!-- Explore Column -->
+      <div>
+        <h4 class="font-sans text-small font-medium text-text-primary mb-4 uppercase tracking-wider">
+          Explore
+        </h4>
+        <ul class="space-y-2">
+          {footerLinks.explore.map((link) => (
+            <li>
+              <a href={link.href} class="text-text-secondary hover:text-accent-amber text-small transition-colors">
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Topics Column -->
+      <div>
+        <h4 class="font-sans text-small font-medium text-text-primary mb-4 uppercase tracking-wider">
+          Topics
+        </h4>
+        <ul class="space-y-2">
+          {footerLinks.topics.map((link) => (
+            <li>
+              <a href={link.href} class="text-text-secondary hover:text-accent-amber text-small transition-colors">
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Connect Column -->
+      <div>
+        <h4 class="font-sans text-small font-medium text-text-primary mb-4 uppercase tracking-wider">
+          Connect
+        </h4>
+        <ul class="space-y-2">
+          {footerLinks.connect.map((link) => (
+            <li>
+              <a href={link.href} class="text-text-secondary hover:text-accent-amber text-small transition-colors">
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="mt-12 pt-8 border-t border-garden-border/20 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-text-tertiary text-small">
+        © {currentYear} Evan Ramirez. Cultivated with care.
+      </p>
+      <p class="text-text-tertiary text-small">
+        Built with <a href="https://astro.build" class="hover:text-accent-amber">Astro</a> & deployed on <a href="https://pages.cloudflare.com" class="hover:text-accent-amber">Cloudflare</a>
+      </p>
+    </div>
+  </div>
+</footer>

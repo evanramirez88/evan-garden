@@ -1,0 +1,187 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MaturityBadge from '../components/MaturityBadge.astro';
+import GenerativeBackground from '../components/GenerativeBackground.svelte';
+
+const domains = [
+  {
+    title: 'Systems Thinking',
+    description: 'Understanding how components interact, identifying leverage points for change, and seeing the whole.',
+    href: '/garden/systems',
+    icon: '◎',
+  },
+  {
+    title: 'Restaurant & Hospitality',
+    description: 'Six years at The Chatham Squire, Toast POS mastery, and building hospitality collective concepts.',
+    href: '/garden/hospitality',
+    icon: '◇',
+  },
+  {
+    title: 'Growing Things',
+    description: 'From Northeastern Institute of Cannabis to home cultivation — understanding botanical systems.',
+    href: '/garden/horticulture',
+    icon: '❋',
+  },
+  {
+    title: 'AI & Technology',
+    description: 'Orchestrating AI systems, building with agents, and exploring the frontier of what\'s possible.',
+    href: '/garden/ai',
+    icon: '⬡',
+  },
+];
+
+const recentNotes = [
+  { title: 'Leverage Points in Restaurant Operations', maturity: 'budding', href: '/garden/leverage-points-restaurant' },
+  { title: 'The CAMELOT Framework', maturity: 'evergreen', href: '/garden/camelot' },
+  { title: 'Cannabis Cultivation Fundamentals', maturity: 'seedling', href: '/garden/cannabis-cultivation' },
+];
+---
+
+<BaseLayout title="The Grounded Generalist">
+  <!-- Hero Section -->
+  <section class="section relative overflow-hidden min-h-[80vh] flex items-center">
+    <!-- Generative Mycelium Background -->
+    <div class="absolute inset-0">
+      <GenerativeBackground client:load />
+    </div>
+
+    <!-- Subtle gradient overlay -->
+    <div class="absolute inset-0 bg-gradient-to-b from-garden-black/30 via-garden-charcoal/50 to-garden-charcoal pointer-events-none"></div>
+
+    <div class="container-wide relative">
+      <div class="max-w-4xl">
+        <!-- Identity -->
+        <p class="text-accent-amber font-sans text-small uppercase tracking-widest mb-4" data-animate="fade-up">
+          The Grounded Generalist
+        </p>
+
+        <h1 class="text-display font-serif text-text-primary mb-6 text-balance" data-animate="fade-up">
+          Cultivating ideas across
+          <span class="gradient-text">systems</span>,
+          <span class="text-accent-terracotta">hospitality</span>, and
+          <span class="text-accent-sage">growth</span>
+        </h1>
+
+        <p class="text-body text-text-secondary max-w-2xl mb-8" data-animate="fade-up">
+          Welcome to my digital garden — a living collection of interconnected ideas spanning restaurant technology,
+          horticulture education, AI development, and systems thinking. Ideas grow here, from seedlings to evergreens.
+        </p>
+
+        <div class="flex flex-wrap gap-4" data-animate="fade-up">
+          <a href="/start" class="btn-primary">
+            Start Here →
+          </a>
+          <a href="/garden" class="btn-ghost">
+            Explore the Garden
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Domains Section -->
+  <section class="section bg-garden-black/50">
+    <div class="container-wide">
+      <div class="text-center mb-16" data-animate="fade-up">
+        <h2 class="text-h2 font-serif text-text-primary mb-4">
+          Domains of Exploration
+        </h2>
+        <p class="text-text-secondary max-w-2xl mx-auto">
+          Systems thinking is the unifying lens — all domains involve understanding how components interact
+          and identifying leverage points for meaningful change.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-animate="stagger-parent">
+        {domains.map((domain) => (
+          <a href={domain.href} class="card-hover group" data-animate="stagger-child">
+            <div class="flex items-start gap-4">
+              <span class="text-2xl text-accent-amber group-hover:scale-110 transition-transform">
+                {domain.icon}
+              </span>
+              <div>
+                <h3 class="text-h3 font-serif text-text-primary mb-2 group-hover:text-accent-amber transition-colors">
+                  {domain.title}
+                </h3>
+                <p class="text-text-secondary text-small">
+                  {domain.description}
+                </p>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Notes Section -->
+  <section class="section">
+    <div class="container-wide">
+      <div class="flex justify-between items-end mb-12" data-animate="fade-up">
+        <div>
+          <h2 class="text-h2 font-serif text-text-primary mb-2">
+            Recently Tended
+          </h2>
+          <p class="text-text-secondary">
+            Notes I've been cultivating lately
+          </p>
+        </div>
+        <a href="/garden" class="text-accent-amber hover:text-accent-terracotta transition-colors text-small">
+          View all notes →
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6" data-animate="stagger-parent">
+        {recentNotes.map((note) => (
+          <a href={note.href} class="card-hover group" data-animate="stagger-child">
+            <div class="flex items-center gap-2 mb-3">
+              <MaturityBadge maturity={note.maturity} />
+            </div>
+            <h3 class="text-h3 font-serif text-text-primary group-hover:text-accent-amber transition-colors">
+              {note.title}
+            </h3>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- About Preview Section -->
+  <section class="section bg-garden-surface/30">
+    <div class="container-narrow text-center">
+      <p class="text-accent-amber font-sans text-small uppercase tracking-widest mb-4" data-animate="fade-up">
+        About
+      </p>
+      <h2 class="text-h2 font-serif text-text-primary mb-6" data-animate="fade-up">
+        Evan Ramirez
+      </h2>
+      <p class="text-body text-text-secondary mb-8" data-animate="fade-up">
+        I'm a generalist who believes that breadth of knowledge is a superpower when unified through systems thinking.
+        From optimizing restaurant operations to teaching cannabis cultivation to building AI agent frameworks —
+        everything connects through understanding how systems work and where to apply leverage.
+      </p>
+      <a href="/about" class="btn-ghost" data-animate="fade-up">
+        Learn More About Me
+      </a>
+    </div>
+  </section>
+
+  <!-- Graph Teaser -->
+  <section class="section">
+    <div class="container-wide">
+      <div class="card bg-garden-black/50 border-accent-amber/20 p-12 text-center" data-animate="fade-up">
+        <span class="text-4xl mb-4 block">⬡</span>
+        <h2 class="text-h2 font-serif text-text-primary mb-4">
+          See How Ideas Connect
+        </h2>
+        <p class="text-text-secondary max-w-xl mx-auto mb-6">
+          Explore the knowledge graph to discover unexpected connections between restaurant operations,
+          plant biology, AI systems, and beyond.
+        </p>
+        <a href="/graph" class="btn-primary">
+          Open Knowledge Graph
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

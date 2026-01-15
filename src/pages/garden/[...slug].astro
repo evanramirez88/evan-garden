@@ -1,0 +1,231 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MaturityBadge from '../../components/MaturityBadge.astro';
+import Backlinks from '../../components/Backlinks.astro';
+
+export async function getStaticPaths() {
+  const gardenEntries = await getCollection('garden', ({ data }) => !data.draft);
+  return gardenEntries.map(entry => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'garden'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// Get all notes for backlinks calculation
+const allNotes = await getCollection('garden', ({ data }) => !data.draft);
+
+// Find notes that link to this one
+const backlinks = allNotes.filter(note => {
+  // Check relatedNotes array
+  if (note.data.relatedNotes?.includes(entry.slug)) return true;
+  // Check body for wikilinks
+  return note.body.includes(`[[${entry.slug}`) || note.body.includes(`[[${entry.data.title}`);
+}).filter(note => note.slug !== entry.slug);
+
+// Get related notes that exist
+const relatedNotes = entry.data.relatedNotes
+  ?.map(slug => allNotes.find(n => n.slug === slug))
+  .filter(Boolean) || [];
+
+const topicLabels = {
+  systems: 'Systems Thinking',
+  hospitality: 'Restaurant & Hospitality',
+  horticulture: 'Growing Things',
+  ai: 'AI & Technology',
+  play: 'Play & Analysis',
+  meta: 'Meta',
+};
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description || `A note on ${entry.data.title}`}
+>
+  <article class="section">
+    <div class="container-narrow">
+      <!-- Header -->
+      <header class="mb-12">
+        <div class="flex flex-wrap items-center gap-3 mb-4">
+          <MaturityBadge maturity={entry.data.maturity} />
+          <span class="text-text-tertiary">·</span>
+          <a
+            href={`/garden?topic=${entry.data.topic}`}
+            class="text-text-secondary text-small hover:text-accent-amber transition-colors"
+          >
+            {topicLabels[entry.data.topic]}
+          </a>
+        </div>
+
+        <h1 class="text-h1 font-serif text-text-primary mb-4">
+          {entry.data.title}
+        </h1>
+
+        {entry.data.description && (
+          <p class="text-body text-text-secondary mb-6">
+            {entry.data.description}
+          </p>
+        )}
+
+        <div class="flex flex-wrap items-center gap-4 text-small text-text-tertiary">
+          <span>
+            Planted: {entry.data.created.toLocaleDateString('en-US', {
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric'
+            })}
+          </span>
+          {entry.data.updated && (
+            <>
+              <span>·</span>
+              <span>
+                Last tended: {entry.data.updated.toLocaleDateString('en-US', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric'
+                })}
+              </span>
+            </>
+          )}
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="prose">
+        <Content />
+      </div>
+
+      <!-- Tags -->
+      {entry.data.tags.length > 0 && (
+        <div class="mt-12 pt-8 border-t border-garden-border/30">
+          <div class="flex flex-wrap gap-2">
+            {entry.data.tags.map(tag => (
+              <a
+                href={`/garden?tag=${tag}`}
+                class="px-3 py-1 rounded-full text-small border border-garden-border text-text-secondary hover:border-accent-amber hover:text-accent-amber transition-colors"
+              >
+                {tag}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Related Notes -->
+      {relatedNotes.length > 0 && (
+        <div class="mt-12 pt-8 border-t border-garden-border/30">
+          <h2 class="text-h3 font-serif text-text-primary mb-4">Related Notes</h2>
+          <div class="grid gap-3">
+            {relatedNotes.map(note => note && (
+              <a
+                href={`/garden/${note.slug}`}
+                class="flex items-center gap-3 p-4 rounded-lg bg-garden-surface/50 hover:bg-garden-surface transition-colors group"
+              >
+                <MaturityBadge maturity={note.data.maturity} showLabel={false} />
+                <span class="text-text-primary group-hover:text-accent-amber transition-colors">
+                  {note.data.title}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Backlinks -->
+      {backlinks.length > 0 && (
+        <div class="mt-12 pt-8 border-t border-garden-border/30">
+          <h2 class="text-h3 font-serif text-text-primary mb-4">
+            Notes that link here
+            <span class="text-text-tertiary text-small font-sans ml-2">({backlinks.length})</span>
+          </h2>
+          <div class="grid gap-3">
+            {backlinks.map(note => (
+              <a
+                href={`/garden/${note.slug}`}
+                class="flex items-center gap-3 p-4 rounded-lg bg-garden-surface/50 hover:bg-garden-surface transition-colors group"
+              >
+                <MaturityBadge maturity={note.data.maturity} showLabel={false} />
+                <span class="text-text-primary group-hover:text-accent-amber transition-colors">
+                  {note.data.title}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Navigation -->
+      <nav class="mt-16 pt-8 border-t border-garden-border/30 flex justify-between">
+        <a href="/garden" class="btn-ghost text-small">
+          ← Back to Garden
+        </a>
+        <a href="/graph" class="btn-ghost text-small">
+          View in Graph →
+        </a>
+      </nav>
+    </div>
+  </article>
+</BaseLayout>
+
+<style is:global>
+  /* Prose styling for markdown content */
+  .prose {
+    @apply text-text-primary;
+  }
+
+  .prose h2 {
+    @apply text-h2 font-serif mt-12 mb-4;
+  }
+
+  .prose h3 {
+    @apply text-h3 font-serif mt-8 mb-3;
+  }
+
+  .prose p {
+    @apply text-body text-text-secondary mb-4 leading-relaxed;
+  }
+
+  .prose ul, .prose ol {
+    @apply mb-4 pl-6;
+  }
+
+  .prose li {
+    @apply text-text-secondary mb-2;
+  }
+
+  .prose ul li {
+    @apply list-disc;
+  }
+
+  .prose ol li {
+    @apply list-decimal;
+  }
+
+  .prose strong {
+    @apply text-text-primary font-semibold;
+  }
+
+  .prose em {
+    @apply italic;
+  }
+
+  .prose blockquote {
+    @apply border-l-2 border-accent-amber pl-4 my-6 italic text-text-secondary;
+  }
+
+  .prose hr {
+    @apply border-garden-border/30 my-12;
+  }
+
+  /* Wiki link styling */
+  .prose a[href^="/garden"] {
+    @apply text-accent-amber border-b border-accent-amber/30 hover:border-accent-amber transition-colors no-underline;
+  }
+</style>

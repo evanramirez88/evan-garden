@@ -1,0 +1,142 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Get all projects
+const allProjects = await getCollection('projects');
+const sortedProjects = allProjects.sort((a, b) => {
+  const dateA = a.data.updated || a.data.created;
+  const dateB = b.data.updated || b.data.created;
+  return dateB.getTime() - dateA.getTime();
+});
+
+// Separate by status
+const activeProjects = sortedProjects.filter(p => p.data.status === 'active');
+const conceptProjects = sortedProjects.filter(p => p.data.status === 'concept');
+const completedProjects = sortedProjects.filter(p => p.data.status === 'completed');
+
+const statusLabels = {
+  active: { label: 'Active', class: 'text-accent-sage bg-accent-sage/10' },
+  concept: { label: 'Concept', class: 'text-accent-amber bg-accent-amber/10' },
+  completed: { label: 'Completed', class: 'text-text-secondary bg-garden-surface' },
+  archived: { label: 'Archived', class: 'text-text-tertiary bg-garden-surface' },
+};
+---
+
+<BaseLayout
+  title="Projects"
+  description="Portfolio of work spanning restaurant tech, AI systems, and more."
+>
+  <section class="section">
+    <div class="container-wide">
+      <header class="mb-16">
+        <p class="text-accent-amber font-sans text-small uppercase tracking-widest mb-4">
+          Projects
+        </p>
+        <h1 class="text-h1 font-serif text-text-primary mb-6">
+          Things I'm Building
+        </h1>
+        <p class="text-body text-text-secondary max-w-2xl">
+          From frameworks to concepts, here's what I'm working on.
+          Some are active developments, others are ideas in incubation.
+        </p>
+      </header>
+
+      {activeProjects.length > 0 && (
+        <div class="mb-16">
+          <h2 class="text-h3 font-serif text-text-primary mb-6 pb-3 border-b border-garden-border/30">
+            Active Projects
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {activeProjects.map(project => (
+              <article class="card-hover">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class={`px-2 py-0.5 rounded text-xs ${statusLabels[project.data.status].class}`}>
+                    {statusLabels[project.data.status].label}
+                  </span>
+                  {project.data.topics.slice(0, 2).map(topic => (
+                    <span class="text-text-tertiary text-xs">{topic}</span>
+                  ))}
+                </div>
+                <h3 class="text-h3 font-serif text-text-primary mb-2">
+                  {project.data.title}
+                </h3>
+                <p class="text-text-secondary text-small mb-4">
+                  {project.data.description}
+                </p>
+                <div class="flex gap-4">
+                  {project.data.url && (
+                    <a href={project.data.url} class="text-accent-amber text-small hover:text-accent-terracotta transition-colors">
+                      Visit →
+                    </a>
+                  )}
+                  {project.data.github && (
+                    <a href={project.data.github} class="text-text-secondary text-small hover:text-accent-amber transition-colors">
+                      GitHub
+                    </a>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {conceptProjects.length > 0 && (
+        <div class="mb-16">
+          <h2 class="text-h3 font-serif text-text-primary mb-6 pb-3 border-b border-garden-border/30">
+            Concepts in Development
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {conceptProjects.map(project => (
+              <article class="card-hover">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class={`px-2 py-0.5 rounded text-xs ${statusLabels[project.data.status].class}`}>
+                    {statusLabels[project.data.status].label}
+                  </span>
+                </div>
+                <h3 class="text-h3 font-serif text-text-primary mb-2">
+                  {project.data.title}
+                </h3>
+                <p class="text-text-secondary text-small">
+                  {project.data.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {completedProjects.length > 0 && (
+        <div>
+          <h2 class="text-h3 font-serif text-text-primary mb-6 pb-3 border-b border-garden-border/30">
+            Completed Work
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {completedProjects.map(project => (
+              <article class="card">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class={`px-2 py-0.5 rounded text-xs ${statusLabels[project.data.status].class}`}>
+                    {statusLabels[project.data.status].label}
+                  </span>
+                </div>
+                <h3 class="text-h3 font-serif text-text-primary mb-2">
+                  {project.data.title}
+                </h3>
+                <p class="text-text-secondary text-small">
+                  {project.data.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {sortedProjects.length === 0 && (
+        <div class="text-center py-16">
+          <p class="text-text-secondary">Projects coming soon.</p>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

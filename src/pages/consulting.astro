@@ -1,0 +1,195 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const services = [
+  {
+    title: "Restaurant Technology",
+    description: "POS optimization, system integration, and digital transformation for hospitality operations.",
+    details: [
+      "Toast POS implementation and optimization",
+      "System integration and data flow architecture",
+      "Staff training and adoption strategies",
+      "Technology stack evaluation"
+    ]
+  },
+  {
+    title: "Operations Consulting",
+    description: "Systems thinking applied to hospitality operations—finding leverage points for meaningful change.",
+    details: [
+      "Operational efficiency analysis",
+      "Workflow design and optimization",
+      "Service model development",
+      "Team structure and communication"
+    ]
+  },
+  {
+    title: "AI Systems Implementation",
+    description: "Building coherent AI agent systems that augment human capabilities without creating chaos.",
+    details: [
+      "AI strategy and use case identification",
+      "Agent orchestration architecture (CAMELOT framework)",
+      "Implementation and integration",
+      "Team training and adoption"
+    ]
+  },
+];
+---
+
+<BaseLayout
+  title="Consulting"
+  description="Expert consulting in restaurant technology, hospitality operations, and AI systems implementation."
+>
+  <!-- Hero -->
+  <section class="section">
+    <div class="container-wide">
+      <div class="max-w-3xl">
+        <p class="text-accent-amber font-sans text-small uppercase tracking-widest mb-4">
+          Consulting
+        </p>
+        <h1 class="text-h1 font-serif text-text-primary mb-6">
+          Systems Thinking Applied
+        </h1>
+        <p class="text-body text-text-secondary mb-8">
+          I help organizations identify leverage points—the places where small changes create
+          outsized impact. Whether you're optimizing restaurant operations, implementing new
+          technology, or building AI systems, the approach is the same: understand the system,
+          find the leverage, apply force deliberately.
+        </p>
+        <a href="/contact" class="btn-primary">
+          Get in Touch
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section pt-0">
+    <div class="container-wide">
+      <h2 class="text-h2 font-serif text-text-primary mb-12">
+        Areas of Focus
+      </h2>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {services.map((service) => (
+          <div class="card">
+            <h3 class="text-h3 font-serif text-text-primary mb-3">
+              {service.title}
+            </h3>
+            <p class="text-text-secondary mb-6">
+              {service.description}
+            </p>
+            <ul class="space-y-2">
+              {service.details.map((detail) => (
+                <li class="flex items-start gap-2 text-small text-text-secondary">
+                  <span class="text-accent-amber mt-1">•</span>
+                  {detail}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Approach -->
+  <section class="section bg-garden-black/50">
+    <div class="container-narrow">
+      <h2 class="text-h2 font-serif text-text-primary mb-8 text-center">
+        The Approach
+      </h2>
+
+      <div class="space-y-8">
+        <div class="flex gap-6">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-garden-surface flex items-center justify-center text-accent-amber font-serif text-xl">
+            1
+          </div>
+          <div>
+            <h3 class="text-h3 font-serif text-text-primary mb-2">
+              Understand the System
+            </h3>
+            <p class="text-text-secondary">
+              Before proposing solutions, I map the existing system—its components, relationships,
+              feedback loops, and constraints. Most problems aren't what they appear to be on the surface.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex gap-6">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-garden-surface flex items-center justify-center text-accent-amber font-serif text-xl">
+            2
+          </div>
+          <div>
+            <h3 class="text-h3 font-serif text-text-primary mb-2">
+              Identify Leverage Points
+            </h3>
+            <p class="text-text-secondary">
+              Using Donella Meadows' framework, I identify where interventions will have the greatest
+              effect—often not where intuition suggests. The goal is precision, not effort.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex gap-6">
+          <div class="flex-shrink-0 w-12 h-12 rounded-full bg-garden-surface flex items-center justify-center text-accent-amber font-serif text-xl">
+            3
+          </div>
+          <div>
+            <h3 class="text-h3 font-serif text-text-primary mb-2">
+              Implement Deliberately
+            </h3>
+            <p class="text-text-secondary">
+              Change happens in systems, not overnight. Implementation plans account for
+              feedback effects, resistance, and the time systems need to adapt.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Background -->
+  <section class="section">
+    <div class="container-narrow">
+      <h2 class="text-h2 font-serif text-text-primary mb-8">
+        Background
+      </h2>
+      <div class="space-y-4 text-text-secondary">
+        <p>
+          Six years at The Chatham Squire taught me how restaurants actually work—not the
+          theory, but the daily reality of service, systems, and human coordination under pressure.
+        </p>
+        <p>
+          Teaching at Northeastern Institute of Cannabis gave me experience translating complex
+          systems into understandable frameworks for learners at various levels.
+        </p>
+        <p>
+          Building AI systems (including the CAMELOT framework) has given me firsthand knowledge
+          of how to implement technology that augments rather than overwhelms.
+        </p>
+        <p>
+          Donella Meadows' systems thinking work provides the theoretical foundation that
+          connects all of these experiences into a coherent consulting approach.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section pt-0">
+    <div class="container-wide">
+      <div class="card bg-accent-amber/5 border-accent-amber/20 p-12 text-center">
+        <h2 class="text-h2 font-serif text-text-primary mb-4">
+          Ready to Find Your Leverage Points?
+        </h2>
+        <p class="text-text-secondary max-w-xl mx-auto mb-8">
+          Every engagement starts with a conversation. Let's talk about your system,
+          your challenges, and where the real opportunities lie.
+        </p>
+        <a href="/contact" class="btn-primary">
+          Start a Conversation
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

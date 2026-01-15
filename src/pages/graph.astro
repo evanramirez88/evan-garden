@@ -1,0 +1,107 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import KnowledgeGraph from '../components/KnowledgeGraph.svelte';
+
+// Get all non-draft garden notes
+const allNotes = await getCollection('garden', ({ data }) => !data.draft);
+
+// Build nodes and links for the graph
+const nodes = allNotes.map(note => ({
+  id: note.slug,
+  title: note.data.title,
+  topic: note.data.topic,
+  maturity: note.data.maturity,
+  href: `/garden/${note.slug}`,
+}));
+
+const links: { source: string; target: string }[] = [];
+const nodeIds = new Set(nodes.map(n => n.id));
+
+// Build links from relatedNotes and wikilinks in content
+allNotes.forEach(note => {
+  // From relatedNotes array
+  note.data.relatedNotes?.forEach(targetSlug => {
+    if (nodeIds.has(targetSlug)) {
+      links.push({ source: note.slug, target: targetSlug });
+    }
+  });
+
+  // From wikilinks in content (basic parsing)
+  const wikiLinkRegex = /\[\[([^\]|]+)(?:\|[^\]]+)?\]\]/g;
+  let match;
+  while ((match = wikiLinkRegex.exec(note.body)) !== null) {
+    const targetSlug = match[1].toLowerCase().replace(/\s+/g, '-');
+    if (nodeIds.has(targetSlug) && targetSlug !== note.slug) {
+      // Avoid duplicates
+      const exists = links.some(l =>
+        (l.source === note.slug && l.target === targetSlug) ||
+        (l.source === targetSlug && l.target === note.slug)
+      );
+      if (!exists) {
+        links.push({ source: note.slug, target: targetSlug });
+      }
+    }
+  }
+});
+
+const graphData = { nodes, links };
+---
+
+<BaseLayout
+  title="Knowledge Graph"
+  description="Explore the connections between ideas in the digital garden."
+>
+  <section class="section">
+    <div class="container-wide">
+      <header class="mb-8">
+        <p class="text-accent-amber font-sans text-small uppercase tracking-widest mb-4">
+          Knowledge Graph
+        </p>
+        <h1 class="text-h1 font-serif text-text-primary mb-4">
+          See How Ideas Connect
+        </h1>
+        <p class="text-body text-text-secondary max-w-2xl">
+          This graph visualizes the connections between notes in the garden.
+          Each node is a note; each line represents a link. Click a node to visit that note.
+        </p>
+      </header>
+
+      <!-- Legend -->
+      <div class="flex flex-wrap gap-6 mb-8 text-small">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[#D4A574]"></span>
+          <span class="text-text-secondary">Systems</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[#C4725B]"></span>
+          <span class="text-text-secondary">Hospitality</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[#7D8B75]"></span>
+          <span class="text-text-secondary">Horticulture</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[#6B9BD2]"></span>
+          <span class="text-text-secondary">AI & Tech</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-[#9B8BD2]"></span>
+          <span class="text-text-secondary">Play</span>
+        </div>
+      </div>
+
+      <!-- Graph Container -->
+      <div class="card p-0 overflow-hidden" style="height: 600px;">
+        <KnowledgeGraph
+          client:visible
+          data={graphData}
+        />
+      </div>
+
+      <p class="text-text-tertiary text-small mt-4 text-center">
+        Drag nodes to rearrange. Scroll to zoom. Click a node to open that note.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import MaturityBadge from './MaturityBadge.astro';
+
+interface Props {
+  backlinks: CollectionEntry<'garden'>[];
+}
+
+const { backlinks } = Astro.props;
+---
+
+{backlinks.length > 0 && (
+  <div class="mt-12 pt-8 border-t border-garden-border/30">
+    <h2 class="text-h3 font-serif text-text-primary mb-4">
+      Notes that link here
+      <span class="text-text-tertiary text-small font-sans ml-2">({backlinks.length})</span>
+    </h2>
+    <div class="grid gap-3">
+      {backlinks.map(note => (
+        <a
+          href={`/garden/${note.slug}`}
+          class="flex items-center gap-3 p-4 rounded-lg bg-garden-surface/50 hover:bg-garden-surface transition-colors group"
+        >
+          <MaturityBadge maturity={note.data.maturity} showLabel={false} />
+          <span class="text-text-primary group-hover:text-accent-amber transition-colors">
+            {note.data.title}
+          </span>
+        </a>
+      ))}
+    </div>
+  </div>
+)}
