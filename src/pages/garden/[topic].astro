@@ -1,0 +1,288 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MaturityBadge from '../../components/MaturityBadge.astro';
+
+// Define topic metadata
+const topicMeta = {
+  systems: {
+    title: 'Systems Thinking',
+    description: 'Understanding how components interact, identifying leverage points for change, and seeing the whole rather than just the parts.',
+    icon: '◎',
+    color: 'amber',
+    readingPath: ['systems-thinking-intro', 'leverage-points-systems', 'leverage-points-restaurant'],
+  },
+  hospitality: {
+    title: 'Restaurant & Hospitality',
+    description: 'Six years of lessons from The Chatham Squire, Toast POS mastery, and building hospitality systems that scale.',
+    icon: '◇',
+    color: 'terracotta',
+    readingPath: ['toast-pos-mastery', 'leverage-points-restaurant'],
+  },
+  horticulture: {
+    title: 'Growing Things',
+    description: 'From cannabis cultivation certification to understanding botanical systems — the science and art of helping things grow.',
+    icon: '❋',
+    color: 'sage',
+    readingPath: ['cannabis-cultivation'],
+  },
+  ai: {
+    title: 'AI & Technology',
+    description: 'Orchestrating AI systems, building with agents, and exploring the frontier of what becomes possible when humans and machines collaborate.',
+    icon: '⬡',
+    color: 'amber',
+    readingPath: ['camelot'],
+  },
+  play: {
+    title: 'Play & Analysis',
+    description: 'NFL analysis, game theory, and the serious business of understanding complex competitive systems.',
+    icon: '◈',
+    color: 'amber',
+    readingPath: [],
+  },
+  meta: {
+    title: 'Meta',
+    description: 'Notes about the garden itself — how it works, why it exists, and the philosophy behind digital gardens.',
+    icon: '✦',
+    color: 'amber',
+    readingPath: [],
+  },
+};
+
+export async function getStaticPaths() {
+  return Object.keys(topicMeta).map(topic => ({
+    params: { topic },
+  }));
+}
+
+const { topic } = Astro.params;
+const meta = topicMeta[topic as keyof typeof topicMeta];
+
+if (!meta) {
+  return Astro.redirect('/garden');
+}
+
+// Get all notes for this topic
+const allNotes = await getCollection('garden', ({ data }) =>
+  !data.draft && data.topic === topic
+);
+
+// Sort by maturity (evergreen first) then by updated date
+const sortedNotes = allNotes.sort((a, b) => {
+  const maturityOrder = { evergreen: 0, budding: 1, seedling: 2 };
+  const maturityDiff = maturityOrder[a.data.maturity] - maturityOrder[b.data.maturity];
+  if (maturityDiff !== 0) return maturityDiff;
+
+  const dateA = a.data.updated || a.data.created;
+  const dateB = b.data.updated || b.data.created;
+  return dateB.getTime() - dateA.getTime();
+});
+
+// Group by maturity
+const evergreen = sortedNotes.filter(n => n.data.maturity === 'evergreen');
+const budding = sortedNotes.filter(n => n.data.maturity === 'budding');
+const seedling = sortedNotes.filter(n => n.data.maturity === 'seedling');
+
+// Get reading path notes
+const readingPathNotes = meta.readingPath
+  .map(slug => allNotes.find(n => n.slug === slug))
+  .filter(Boolean);
+
+// Stats
+const totalNotes = allNotes.length;
+---
+
+<BaseLayout title={meta.title} description={meta.description}>
+  <section class="section">
+    <div class="container-wide">
+      <!-- Hero -->
+      <div class="max-w-3xl mb-16" data-animate="fade-up">
+        <div class="flex items-center gap-4 mb-6">
+          <span class="text-5xl" data-animate="fade-up">{meta.icon}</span>
+          <div>
+            <p class="text-accent-amber text-small uppercase tracking-widest mb-1">Topic</p>
+            <h1 class="text-h1 font-serif text-text-primary">{meta.title}</h1>
+          </div>
+        </div>
+        <p class="text-body text-text-secondary mb-6">
+          {meta.description}
+        </p>
+        <div class="flex flex-wrap gap-4 text-small text-text-tertiary">
+          <span>{totalNotes} {totalNotes === 1 ? 'note' : 'notes'}</span>
+          {evergreen.length > 0 && <span>• {evergreen.length} evergreen</span>}
+          {budding.length > 0 && <span>• {budding.length} budding</span>}
+          {seedling.length > 0 && <span>• {seedling.length} seedling</span>}
+        </div>
+      </div>
+
+      <!-- Reading Path -->
+      {readingPathNotes.length > 0 && (
+        <div class="mb-16" data-animate="fade-up">
+          <h2 class="text-h3 font-serif text-text-primary mb-6">
+            Suggested Reading Path
+          </h2>
+          <div class="grid gap-4">
+            {readingPathNotes.map((note, i) => note && (
+              <a
+                href={`/garden/${note.slug}`}
+                class="card-hover group flex items-center gap-4"
+              >
+                <span class="flex-shrink-0 w-8 h-8 rounded-full bg-accent-amber/20 text-accent-amber flex items-center justify-center text-small font-medium">
+                  {i + 1}
+                </span>
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-1">
+                    <MaturityBadge maturity={note.data.maturity} showLabel={false} />
+                    <span class="text-text-primary group-hover:text-accent-amber transition-colors font-medium">
+                      {note.data.title}
+                    </span>
+                  </div>
+                  {note.data.description && (
+                    <p class="text-small text-text-tertiary line-clamp-1">
+                      {note.data.description}
+                    </p>
+                  )}
+                </div>
+                <span class="text-text-tertiary group-hover:text-accent-amber transition-colors">→</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- All Notes -->
+      <div data-animate="fade-up">
+        <h2 class="text-h3 font-serif text-text-primary mb-6">
+          All Notes
+        </h2>
+
+        {sortedNotes.length === 0 ? (
+          <div class="card text-center py-12">
+            <span class="text-4xl mb-4 block">🌱</span>
+            <p class="text-text-secondary">Seeds planted here soon.</p>
+          </div>
+        ) : (
+          <div class="space-y-8">
+            {/* Evergreen Notes */}
+            {evergreen.length > 0 && (
+              <div>
+                <h3 class="text-small text-maturity-evergreen uppercase tracking-widest mb-4 flex items-center gap-2">
+                  <span>🌳</span> Evergreen
+                </h3>
+                <div class="grid gap-3" data-animate="stagger-parent">
+                  {evergreen.map(note => (
+                    <a
+                      href={`/garden/${note.slug}`}
+                      class="card-hover group"
+                      data-animate="stagger-child"
+                    >
+                      <div class="flex items-start justify-between gap-4">
+                        <div>
+                          <h4 class="text-text-primary group-hover:text-accent-amber transition-colors font-medium mb-1">
+                            {note.data.title}
+                          </h4>
+                          {note.data.description && (
+                            <p class="text-small text-text-tertiary line-clamp-2">
+                              {note.data.description}
+                            </p>
+                          )}
+                        </div>
+                        <span class="text-text-tertiary group-hover:text-accent-amber transition-colors flex-shrink-0">→</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Budding Notes */}
+            {budding.length > 0 && (
+              <div>
+                <h3 class="text-small text-maturity-budding uppercase tracking-widest mb-4 flex items-center gap-2">
+                  <span>🌿</span> Budding
+                </h3>
+                <div class="grid gap-3" data-animate="stagger-parent">
+                  {budding.map(note => (
+                    <a
+                      href={`/garden/${note.slug}`}
+                      class="card-hover group"
+                      data-animate="stagger-child"
+                    >
+                      <div class="flex items-start justify-between gap-4">
+                        <div>
+                          <h4 class="text-text-primary group-hover:text-accent-amber transition-colors font-medium mb-1">
+                            {note.data.title}
+                          </h4>
+                          {note.data.description && (
+                            <p class="text-small text-text-tertiary line-clamp-2">
+                              {note.data.description}
+                            </p>
+                          )}
+                        </div>
+                        <span class="text-text-tertiary group-hover:text-accent-amber transition-colors flex-shrink-0">→</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Seedling Notes */}
+            {seedling.length > 0 && (
+              <div>
+                <h3 class="text-small text-maturity-seedling uppercase tracking-widest mb-4 flex items-center gap-2">
+                  <span>🌱</span> Seedling
+                </h3>
+                <div class="grid gap-3" data-animate="stagger-parent">
+                  {seedling.map(note => (
+                    <a
+                      href={`/garden/${note.slug}`}
+                      class="card-hover group"
+                      data-animate="stagger-child"
+                    >
+                      <div class="flex items-start justify-between gap-4">
+                        <div>
+                          <h4 class="text-text-primary group-hover:text-accent-amber transition-colors font-medium mb-1">
+                            {note.data.title}
+                          </h4>
+                          {note.data.description && (
+                            <p class="text-small text-text-tertiary line-clamp-2">
+                              {note.data.description}
+                            </p>
+                          )}
+                        </div>
+                        <span class="text-text-tertiary group-hover:text-accent-amber transition-colors flex-shrink-0">→</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      <!-- Back to Garden -->
+      <nav class="mt-16 pt-8 border-t border-garden-border/30">
+        <a href="/garden" class="btn-ghost text-small">
+          ← Back to Garden
+        </a>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

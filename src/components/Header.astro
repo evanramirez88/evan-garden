@@ -1,4 +1,6 @@
 ---
+import Search from './Search.svelte';
+
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Start Here', href: '/start' },
@@ -20,26 +22,29 @@ const currentPath = Astro.url.pathname;
     </a>
 
     <!-- Desktop Navigation -->
-    <ul class="hidden md:flex items-center gap-8">
-      {navigation.map((item) => (
-        <li>
-          <a
-            href={item.href}
-            class:list={[
-              'text-small font-sans transition-colors duration-200 relative',
-              currentPath === item.href
-                ? 'text-accent-amber'
-                : 'text-text-secondary hover:text-text-primary'
-            ]}
-          >
-            {item.name}
-            {currentPath === item.href && (
-              <span class="absolute -bottom-1 left-0 right-0 h-px bg-accent-amber" />
-            )}
-          </a>
-        </li>
-      ))}
-    </ul>
+    <div class="hidden md:flex items-center gap-8">
+      <ul class="flex items-center gap-8">
+        {navigation.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={[
+                'text-small font-sans transition-colors duration-200 relative',
+                currentPath === item.href
+                  ? 'text-accent-amber'
+                  : 'text-text-secondary hover:text-text-primary'
+              ]}
+            >
+              {item.name}
+              {currentPath === item.href && (
+                <span class="absolute -bottom-1 left-0 right-0 h-px bg-accent-amber" />
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <Search client:load />
+    </div>
 
     <!-- Mobile Menu Button -->
     <button

@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Get some featured/recent notes to suggest
+const allNotes = await getCollection('garden', ({ data }) => !data.draft);
+const suggestedNotes = allNotes
+  .filter(n => n.data.featured || n.data.maturity === 'evergreen')
+  .slice(0, 3);
+---
+
+<BaseLayout title="Lost in the Garden" description="The page you're looking for doesn't exist.">
+  <section class="section min-h-[60vh] flex items-center">
+    <div class="container-narrow text-center">
+      <!-- Animated icon -->
+      <div class="mb-8" data-animate="fade-up">
+        <span class="text-8xl inline-block animate-float">🌿</span>
+      </div>
+
+      <h1 class="text-h1 font-serif text-text-primary mb-4" data-animate="fade-up">
+        Lost in the Garden
+      </h1>
+
+      <p class="text-body text-text-secondary mb-8 max-w-md mx-auto" data-animate="fade-up">
+        The path you followed led somewhere unexpected. Perhaps the note was moved, renamed, or hasn't been planted yet.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-4 mb-12" data-animate="fade-up">
+        <a href="/" class="btn-primary">
+          Return Home
+        </a>
+        <a href="/garden" class="btn-ghost">
+          Explore the Garden
+        </a>
+      </div>
+
+      <!-- Suggested notes -->
+      {suggestedNotes.length > 0 && (
+        <div class="pt-8 border-t border-garden-border/30" data-animate="fade-up">
+          <p class="text-small text-text-tertiary mb-4">
+            Or start with one of these:
+          </p>
+          <div class="flex flex-wrap justify-center gap-3">
+            {suggestedNotes.map(note => (
+              <a
+                href={`/garden/${note.slug}`}
+                class="px-4 py-2 rounded-lg bg-garden-surface/50 text-text-secondary hover:text-accent-amber hover:bg-garden-surface transition-colors text-small"
+              >
+                {note.data.title}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px) rotate(-5deg);
+    }
+    50% {
+      transform: translateY(-10px) rotate(5deg);
+    }
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float {
+      animation: none;
+    }
+  }
+</style>
