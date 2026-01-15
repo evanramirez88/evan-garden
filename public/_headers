@@ -1,0 +1,38 @@
+# Cloudflare Pages Headers
+# https://developers.cloudflare.com/pages/configuration/headers/
+
+# Cache static assets aggressively (1 year)
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache fonts
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache images
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+/*.jpeg
+  Cache-Control: public, max-age=31536000, immutable
+/*.webp
+  Cache-Control: public, max-age=31536000, immutable
+/*.svg
+  Cache-Control: public, max-age=31536000, immutable
+/*.ico
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML pages - cache briefly, revalidate
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# RSS feed - cache for 1 hour
+/feed.xml
+  Cache-Control: public, max-age=3600
+
+# Security headers for all pages
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin

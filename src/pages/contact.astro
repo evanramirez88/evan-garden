@@ -23,10 +23,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       <form
         class="space-y-6"
-        action="#"
+        action="/api/contact"
         method="POST"
         id="contact-form"
       >
+        <!-- Honeypot field for spam protection -->
+        <div class="hidden" aria-hidden="true">
+          <label for="website">Website</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+
         <div>
           <label for="name" class="block text-text-primary text-small font-medium mb-2">
             Name
@@ -99,26 +105,55 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <script>
   const form = document.getElementById('contact-form') as HTMLFormElement;
+  const button = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
+  const originalButtonText = button?.textContent || 'Send Message';
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+    if (!button) return;
 
-    // For now, just log the submission
-    // In production, this would POST to a Cloudflare Worker
-    console.log('Form submission:', data);
+    // Show loading state
+    button.disabled = true;
+    button.textContent = 'Sending...';
 
-    // Show success message
-    const button = form.querySelector('button[type="submit"]');
-    if (button) {
-      button.textContent = 'Message Sent!';
-      button.classList.add('bg-accent-sage');
-      setTimeout(() => {
-        button.textContent = 'Send Message';
-        button.classList.remove('bg-accent-sage');
+    try {
+      const formData = new FormData(form);
+
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        // Show success message
+        button.textContent = 'Message Sent!';
+        button.classList.remove('bg-accent-amber', 'hover:bg-accent-terracotta');
+        button.classList.add('bg-accent-sage');
         form.reset();
+
+        setTimeout(() => {
+          button.textContent = originalButtonText;
+          button.classList.remove('bg-accent-sage');
+          button.classList.add('bg-accent-amber', 'hover:bg-accent-terracotta');
+          button.disabled = false;
+        }, 3000);
+      } else {
+        throw new Error(result.error || 'Something went wrong');
+      }
+    } catch (error) {
+      // Show error message
+      button.textContent = 'Error - Try Again';
+      button.classList.remove('bg-accent-amber', 'hover:bg-accent-terracotta');
+      button.classList.add('bg-accent-terracotta');
+
+      setTimeout(() => {
+        button.textContent = originalButtonText;
+        button.classList.remove('bg-accent-terracotta');
+        button.classList.add('bg-accent-amber', 'hover:bg-accent-terracotta');
+        button.disabled = false;
       }, 3000);
     }
   });
