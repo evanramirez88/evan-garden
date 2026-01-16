@@ -11,16 +11,39 @@
  * - parallax: Background elements move at different scroll speeds
  */
 
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+// GSAP is loaded dynamically to avoid SSR issues
+let gsap: any;
+let ScrollTrigger: any;
+let isInitialized = false;
 
-// Register GSAP plugins
-gsap.registerPlugin(ScrollTrigger);
+/**
+ * Dynamically load GSAP (only in browser)
+ */
+async function loadGSAP(): Promise<boolean> {
+  if (isInitialized) return true;
+  if (typeof window === 'undefined') return false;
+
+  try {
+    const gsapModule = await import('gsap');
+    const scrollTriggerModule = await import('gsap/ScrollTrigger');
+
+    gsap = gsapModule.gsap;
+    ScrollTrigger = scrollTriggerModule.ScrollTrigger;
+
+    gsap.registerPlugin(ScrollTrigger);
+    isInitialized = true;
+    return true;
+  } catch (e) {
+    console.warn('Failed to load GSAP:', e);
+    return false;
+  }
+}
 
 /**
  * Check if user prefers reduced motion
  */
 function prefersReducedMotion(): boolean {
+  if (typeof window === 'undefined') return true;
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
@@ -28,7 +51,11 @@ function prefersReducedMotion(): boolean {
  * Initialize all scroll-triggered animations
  * Call this on page load and after View Transitions
  */
-export function initScrollAnimations(): void {
+export async function initScrollAnimations(): Promise<void> {
+  // Load GSAP dynamically (browser only)
+  const loaded = await loadGSAP();
+  if (!loaded) return;
+
   // Respect reduced motion preference
   if (prefersReducedMotion()) {
     // Remove initial opacity/transform from animated elements
@@ -37,7 +64,7 @@ export function initScrollAnimations(): void {
   }
 
   // Kill existing ScrollTriggers to prevent duplicates
-  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+  ScrollTrigger.getAll().forEach((trigger: any) => trigger.kill());
 
   // Initialize each animation type
   initFadeUp();
@@ -154,11 +181,12 @@ function initParallax(): void {
  * Animate a single element on demand
  * Useful for dynamically added content
  */
-export function animateElement(
+export async function animateElement(
   element: Element,
   type: 'fade-up' | 'line-reveal' = 'fade-up'
-): void {
-  if (prefersReducedMotion()) return;
+): Promise<void> {
+  const loaded = await loadGSAP();
+  if (!loaded || prefersReducedMotion()) return;
 
   switch (type) {
     case 'fade-up':
@@ -183,5 +211,6 @@ export function animateElement(
  * Call this before page transitions
  */
 export function cleanupScrollAnimations(): void {
-  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+  if (!isInitialized || !ScrollTrigger) return;
+  ScrollTrigger.getAll().forEach((trigger: any) => trigger.kill());
 }
