@@ -80,7 +80,7 @@ const allTags = [...new Set(sortedNotes.flatMap(note => note.data.tags))].sort()
         <div class="mb-16 last:mb-0">
           <div class="flex items-center gap-4 mb-6 pb-3 border-b border-garden-border/30">
             <div class="hidden sm:block flex-shrink-0">
-              <TopicVisual client:visible topic={topicKey as any} size={60} />
+              <TopicVisual client:only="svelte" topic={topicKey as any} size={60} />
             </div>
             <div class="flex items-center gap-3 flex-1">
               <span class="text-xl text-accent-amber sm:hidden">{topic.icon}</span>
