@@ -43,7 +43,7 @@ const currentPath = Astro.url.pathname;
           </li>
         ))}
       </ul>
-      <Search client:load />
+      <Search client:only="svelte" />
     </div>
 
     <!-- Mobile Menu Button -->
