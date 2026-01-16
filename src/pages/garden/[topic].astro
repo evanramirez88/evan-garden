@@ -3,8 +3,17 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MaturityBadge from '../../components/MaturityBadge.astro';
 
+// Topic list for static paths - defined before getStaticPaths
+const TOPICS = ['systems', 'hospitality', 'horticulture', 'ai', 'play', 'meta'] as const;
+
+export async function getStaticPaths() {
+  return TOPICS.map(topic => ({
+    params: { topic },
+  }));
+}
+
 // Define topic metadata
-const topicMeta = {
+const topicMeta: Record<string, { title: string; description: string; icon: string; color: string; readingPath: string[] }> = {
   systems: {
     title: 'Systems Thinking',
     description: 'Understanding how components interact, identifying leverage points for change, and seeing the whole rather than just the parts.',
@@ -48,12 +57,6 @@ const topicMeta = {
     readingPath: [],
   },
 };
-
-export async function getStaticPaths() {
-  return Object.keys(topicMeta).map(topic => ({
-    params: { topic },
-  }));
-}
 
 const { topic } = Astro.params;
 const meta = topicMeta[topic as keyof typeof topicMeta];
