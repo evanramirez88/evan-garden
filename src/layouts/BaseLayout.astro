@@ -62,25 +62,14 @@ const {
     </main>
     <Footer />
 
-    <!-- GSAP Scroll Animations -->
+    <!-- GSAP Scroll Animations - temporarily disabled while debugging SSR issues
     <script>
       import { initScrollAnimations, cleanupScrollAnimations } from '../utils/scroll-animations';
-
-      // Initialize on first load
-      document.addEventListener('DOMContentLoaded', () => {
-        initScrollAnimations();
-      });
-
-      // Re-initialize after View Transitions
-      document.addEventListener('astro:page-load', () => {
-        initScrollAnimations();
-      });
-
-      // Cleanup before page transitions
-      document.addEventListener('astro:before-preparation', () => {
-        cleanupScrollAnimations();
-      });
+      document.addEventListener('DOMContentLoaded', () => initScrollAnimations());
+      document.addEventListener('astro:page-load', () => initScrollAnimations());
+      document.addEventListener('astro:before-preparation', () => cleanupScrollAnimations());
     </script>
+    -->
   </body>
 </html>
 

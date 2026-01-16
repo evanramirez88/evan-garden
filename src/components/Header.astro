@@ -86,16 +86,18 @@ const currentPath = Astro.url.pathname;
 <div class="h-16"></div>
 
 <script>
-  const menuButton = document.getElementById('mobile-menu-button');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const menuOpen = menuButton?.querySelector('.menu-open');
-  const menuClose = menuButton?.querySelector('.menu-close');
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuOpen = menuButton?.querySelector('.menu-open');
+    const menuClose = menuButton?.querySelector('.menu-close');
 
-  menuButton?.addEventListener('click', () => {
-    const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
-    menuButton.setAttribute('aria-expanded', String(!isExpanded));
-    mobileMenu?.classList.toggle('hidden');
-    menuOpen?.classList.toggle('hidden');
-    menuClose?.classList.toggle('hidden');
+    menuButton?.addEventListener('click', () => {
+      const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+      menuButton.setAttribute('aria-expanded', String(!isExpanded));
+      mobileMenu?.classList.toggle('hidden');
+      menuOpen?.classList.toggle('hidden');
+      menuClose?.classList.toggle('hidden');
+    });
   });
 </script>
