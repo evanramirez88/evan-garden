@@ -1,5 +1,6 @@
 ---
 import Search from './Search.svelte';
+import ThemeToggle from './ThemeToggle.svelte';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -12,7 +13,7 @@ const navigation = [
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="site-header fixed top-0 left-0 right-0 z-50 bg-garden-charcoal/80 backdrop-blur-md border-b border-garden-border/30" role="banner">
+<header class="site-header fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b transition-colors duration-300" style="background-color: rgba(var(--header-bg), 0.8); border-color: var(--color-border);" role="banner">
   <nav class="container-wide flex items-center justify-between h-16" aria-label="Main navigation">
     <!-- Logo / Brand -->
     <a href="/" class="flex items-center gap-2 group">
@@ -44,6 +45,7 @@ const currentPath = Astro.url.pathname;
         ))}
       </ul>
       <Search client:only="svelte" />
+      <ThemeToggle client:only="svelte" />
     </div>
 
     <!-- Mobile Menu Button -->

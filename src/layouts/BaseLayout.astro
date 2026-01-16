@@ -50,6 +50,16 @@ const {
 
     <meta name="generator" content={Astro.generator} />
     <ViewTransitions />
+
+    <!-- Theme initialization - prevents flash of wrong theme -->
+    <script is:inline>
+      (function() {
+        const stored = localStorage.getItem('theme');
+        const systemPrefers = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        const theme = stored || systemPrefers;
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
   </head>
   <body class="min-h-screen flex flex-col">
     <!-- Skip to main content link for accessibility -->

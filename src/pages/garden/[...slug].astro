@@ -6,6 +6,8 @@ import Backlinks from '../../components/Backlinks.astro';
 import WikilinkPreview from '../../components/WikilinkPreview.svelte';
 import PaneManager from '../../components/PaneManager.svelte';
 import TopicVisual from '../../components/TopicVisual.svelte';
+import ReadingProgress from '../../components/ReadingProgress.svelte';
+import Comments from '../../components/Comments.svelte';
 
 export async function getStaticPaths() {
   const gardenEntries = await getCollection('garden', ({ data }) => !data.draft);
@@ -106,6 +108,7 @@ const notesPreview = allNotes.map(note => ({
   modifiedTime={entry.data.updated}
   tags={entry.data.tags}
 >
+  <ReadingProgress client:only="svelte" />
   <PaneManager client:only="svelte" currentSlug={entry.slug} currentTitle={entry.data.title}>
   <article class="section">
     <div class="container-narrow">
@@ -206,8 +209,45 @@ const notesPreview = allNotes.map(note => ({
       <!-- Backlinks with Context -->
       <Backlinks backlinks={backlinksWithContext} />
 
+      <!-- Note History -->
+      <div class="mt-12 pt-8 border-t border-garden-border/30">
+        <div class="flex flex-wrap items-center gap-4 text-small text-text-tertiary">
+          <span>
+            First planted: {entry.data.created.toLocaleDateString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric'
+            })}
+          </span>
+          {entry.data.updated && entry.data.updated.getTime() !== entry.data.created.getTime() && (
+            <>
+              <span>·</span>
+              <span>
+                Last tended: {entry.data.updated.toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric'
+                })}
+              </span>
+            </>
+          )}
+          <span>·</span>
+          <a
+            href={`https://github.com/evanramirez88/evan-garden/commits/master/src/content/garden/${entry.slug}.md`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-accent-amber transition-colors"
+          >
+            View history →
+          </a>
+        </div>
+      </div>
+
+      <!-- Comments -->
+      <Comments client:visible slug={entry.slug} />
+
       <!-- Navigation -->
-      <nav class="mt-16 pt-8 border-t border-garden-border/30 flex justify-between">
+      <nav class="mt-8 pt-8 border-t border-garden-border/30 flex justify-between">
         <a href="/garden" class="btn-ghost text-small">
           ← Back to Garden
         </a>
