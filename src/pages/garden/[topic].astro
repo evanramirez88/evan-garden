@@ -3,11 +3,10 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MaturityBadge from '../../components/MaturityBadge.astro';
 
-// Topic list for static paths - defined before getStaticPaths
-const TOPICS = ['systems', 'hospitality', 'horticulture', 'ai', 'play', 'meta'] as const;
-
 export async function getStaticPaths() {
-  return TOPICS.map(topic => ({
+  // Topics must be defined inside getStaticPaths as it runs in isolation during build
+  const topics = ['systems', 'hospitality', 'horticulture', 'ai', 'play', 'meta'];
+  return topics.map(topic => ({
     params: { topic },
   }));
 }
