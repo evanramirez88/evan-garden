@@ -62,14 +62,29 @@ const {
     </main>
     <Footer />
 
-    <!-- GSAP Scroll Animations - temporarily disabled while debugging SSR issues
+    <!-- GSAP Scroll Animations - uses dynamic import to avoid SSR issues -->
     <script>
-      import { initScrollAnimations, cleanupScrollAnimations } from '../utils/scroll-animations';
-      document.addEventListener('DOMContentLoaded', () => initScrollAnimations());
-      document.addEventListener('astro:page-load', () => initScrollAnimations());
-      document.addEventListener('astro:before-preparation', () => cleanupScrollAnimations());
+      async function loadAnimations() {
+        const { initScrollAnimations } = await import('../utils/scroll-animations');
+        await initScrollAnimations();
+      }
+
+      async function cleanupAnimations() {
+        const { cleanupScrollAnimations } = await import('../utils/scroll-animations');
+        cleanupScrollAnimations();
+      }
+
+      // Initialize on first load
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadAnimations);
+      } else {
+        loadAnimations();
+      }
+
+      // Re-initialize after View Transitions
+      document.addEventListener('astro:page-load', loadAnimations);
+      document.addEventListener('astro:before-preparation', cleanupAnimations);
     </script>
-    -->
   </body>
 </html>
 
